@@ -1,8 +1,8 @@
 # Development Pilot and Locked-Test Gate
 
-The project separates method development from final evaluation so that 2021–2024 outcomes are not used to make design decisions.
+The project separates method development from final evaluation so that 2021-2024 outcomes are not used to make design decisions.
 
-## Gate A — source preparation
+## Gate A - source preparation
 
 Before the analysis script is run, the data owner must:
 1. Export the complete monthly cell table and fractional-area ecoregion crosswalk.
@@ -13,7 +13,7 @@ Before the analysis script is run, the data owner must:
 
 Do not use zero to represent missing or unmapped observations.
 
-## Gate B — development and validation
+## Gate B - development and validation
 
 Run only the default mode:
 
@@ -25,7 +25,7 @@ Review training and validation label availability, event prevalence and category
 
 The validation period is for model and protocol review. If design changes are made, document them and update the protocol version.
 
-## Gate C — author-authored prior and freeze
+## Gate C - author-authored prior and freeze
 
 Before any test summary is read:
 1. Create `author_prior_prediction.md` privately and write the prediction in your own words. This personal prior is intentionally not tracked in Git.
@@ -38,9 +38,9 @@ Before any test summary is read:
 
 The script checks every source hash and author freeze field.
 
-## Gate D — one-time test release
+## Gate D - one-time test release
 
-Only after Gates A–C, run:
+Only after Gates A-C, run:
 
 ~~~bash
 python analysis/feasibility_pilot.py --input data/cell_monthly.csv --crosswalk data/cell_ecoregion_weights.csv --manifest extraction_manifest.json --output pilot_outputs --open-locked-test --prior author_prior_prediction.md --freeze analysis_freeze.json
