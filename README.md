@@ -16,6 +16,8 @@
 
 **When Ecosystem Disturbances Compound** investigates whether drought, unusually high burned-area activity and vegetation-greenness stress can be combined to estimate the probability of compound environmental disturbance across global terrestrial ecosystems.
 
+[Read the project story](PROJECT_STORY.md) — the research question, the reasoning behind the study design, and what has and has not been measured so far.
+
 The repository contains a documented research specification, Python analysis workflow, offline React explainer, data contract, quality-control rules, source register, reproducibility safeguards and automated software checks.
 
 **Evidence boundary:** the repository does not contain extracted global environmental rasters or empirical results. The software and research framework are implemented, but no observed event prevalence, regional ranking, fitted-model score or predictive-performance claim is presented. The interface and documentation never substitute invented values for measurements.
