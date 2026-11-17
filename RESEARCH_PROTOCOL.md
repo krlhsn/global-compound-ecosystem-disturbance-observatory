@@ -2,7 +2,7 @@
 
 **Project:** When Ecosystem Disturbances Compound  
 **Course context:** Stanford Probability for AI, Fall 2026  
-**Status:** Detailed pre-analysis specification; global extraction and empirical feasibility review pending  
+**Status:** Complete pre-analysis specification for the research framework; empirical results are not part of this software release  
 **Study target period:** May 2001–December 2024  
 **Forecast horizons:** Exact t+1 and exact t+3
 
@@ -162,16 +162,14 @@ Before any 2021–2024 test label, prevalence summary or score is inspected, the
 2. Whether t+3 performance is expected to be lower, similar or higher than t+1.
 3. The reasoning and confidence behind those expectations.
 
-Record it in PRIOR_PREDICTION.md. The assistant must not invent a personal prior on the student's behalf.
+Record it privately in `author_prior_prediction.md`, which is excluded from version control. An AI-generated suggestion is not the author's prior; the author must review and adopt the statement in their own judgement.
 
 After validation review, freeze the exact thresholds, predictors, hyperparameters, code hash and design decisions in analysis_freeze.json. The analysis program requires the prior, a matching code hash, affirmative freeze fields and an unused release marker. Open the test once and preserve its outputs and hashes. Any later changes prompted by test results must be labelled exploratory.
 
-## 12. Limitations and current status
+## 12. Limitations and release scope
 
-The products are proxies with documented limitations. RESOLVE boundaries are static; a 0.5° cell may contain multiple ecosystems; missingness and uneven observation quality can affect regional comparability. The proposed features and thresholds require extraction QA and empirical feasibility review. Some ecoregions may not contain sufficient events to support stable estimates.
+The selected products are proxies with documented limitations. RESOLVE boundaries are static; a 0.5° cell may contain multiple ecosystems; missingness and uneven observation quality can affect regional comparability. Some ecoregions may not contain sufficient events to support stable estimates. The block-bootstrap interval is an approximation, and the proposed spatial tile size requires sensitivity analysis.
 
-**Completed:** research question, draft definitions, data contract, analysis workflow, test gate and offline explainer.
+This repository release is a complete software and methodological framework. It does not include extracted global rasters, independently reviewed source exports, empirical prevalence tables or fitted-model results. No empirical performance conclusion, regional finding or operational warning capability is claimed. The distinction is intentional: a finished analysis package is not the same thing as a completed empirical study.
 
-**Pending:** global raster extraction, source-level QA verification, real-data pilot, model validation, sensitivity results, student's prior, protocol freeze and locked-test release.
-
-The research protocol is version 1.1-draft. Its product-specific QA rules are specified, but they still require independent verification against the exact export implementation and source metadata before empirical interpretation. Do not claim empirical success, model validation or operational warning capability until those steps are complete.
+The protocol remains a versioned pre-analysis specification. Product-specific quality rules are documented, but any empirical run must verify the exact decoder, source metadata, spatial aggregation and coverage contract used to produce its input tables. Any change to thresholds, predictors, horizons, split logic or evaluation after feasibility review must be versioned and disclosed. The locked-test release requires a genuine author-authored prior, verified extraction manifest and matching analysis freeze.

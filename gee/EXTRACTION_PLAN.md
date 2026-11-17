@@ -6,6 +6,16 @@ This document defines a hybrid source-preparation workflow. ERA5-Land, MCD64A1.0
 
 The target grid is global at 0.5°. A multi-decade monthly table can contain tens of millions of cell-month records. A single global export may exceed memory, task or storage limits. Use deterministic partitions such as calendar year × latitude band, and make each partition independently verifiable. Never change spatial resolution or randomly sample cells after seeing validation outcomes without documenting a protocol amendment.
 
+## Access and authorization
+
+The extraction workflow uses three independently managed data-access systems. The scripts can automate processing after authorization, but they cannot authenticate as the data owner without that account's approval.
+
+- **Google Earth Engine:** the Python API and command-line interface require Earth Engine authentication and initialization with a Google Cloud project the user owns or has permission to use. The project must be registered for Earth Engine access. The Code Editor handles user authentication in its own signed-in session.
+- **NASA LP DAAC / Earthdata:** MOD13C2.061 granule downloads require a NASA Earthdata Login account and the relevant LP DAAC application authorization. Credentials must be entered into the official NASA flow or supplied through a local secret store; never commit them to Git or paste them into chat.
+- **Copernicus Climate Data Store:** ERA5-Land downloads through the CDS API require a personal API token and acceptance of the applicable dataset terms in the CDS account. The token belongs in a local credential file or secret manager, not this repository.
+
+The project does not contain account credentials, tokens, private service-account keys or an authenticated Earth Engine session. The public catalogue pages can be inspected without signing in, but the authenticated data-export operations cannot be run from an unauthenticated environment.
+
 ## Required source collections
 
 | Source | Earth Engine collection | Required content |
