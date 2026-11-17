@@ -1,0 +1,70 @@
+{
+  "status": "incomplete-template",
+  "protocol_version": "1.1-draft",
+  "created_at_utc": "",
+  "author": "Kamrul Hassan",
+  "grid": {
+    "resolution_degrees": 0.5,
+    "crs": "EPSG:4326",
+    "land_mask_definition": "",
+    "grid_asset_id": "",
+    "geometry_sha256": ""
+  },
+  "sources": {
+    "ERA5-Land": {
+      "collection_id": "ECMWF/ERA5_LAND/MONTHLY_AGGR",
+      "retrieval_start": "1980-10-01",
+      "retrieval_end": "2024-12-01",
+      "asset_ids": [],
+      "band_names_and_units_verified": false,
+      "processing_code_sha256": ""
+    },
+    "MOD13C2.061": {
+      "collection_id": "MODIS/061/MOD13C2",
+      "retrieval_start": "2001-01-01",
+      "retrieval_end": "2024-12-01",
+      "asset_ids": [],
+      "qa_decoder_version": "SummaryQA rank 0; DetailedQA bits 0-1=00, 2-5<=1, 11-13=001, 14-15>=2",
+      "qa_decoder_code_sha256": ""
+    },
+    "MCD64A1.061": {
+      "collection_id": "MODIS/061/MCD64A1",
+      "retrieval_start": "2001-01-01",
+      "retrieval_end": "2024-12-01",
+      "asset_ids": [],
+      "qa_decoder_version": "QA bits 0=land, 1=valid, 2=not shortened; unburned requires bits 5-7=0",
+      "qa_decoder_code_sha256": ""
+    },
+    "RESOLVE_Ecoregions_2017": {
+      "collection_id": "RESOLVE/ECOREGIONS/2017",
+      "retrieval_date": "",
+      "asset_ids": [],
+      "license_verified": false,
+      "crosswalk_code_sha256": ""
+    }
+  },
+  "files": {
+    "cell_monthly_sha256": "",
+    "cell_ecoregion_weights_sha256": "",
+    "cell_monthly_row_count": null,
+    "grid_cell_count": null,
+    "crosswalk_pair_count": null
+  },
+  "qa_review": {
+    "status": "not-reviewed",
+    "reviewer": "",
+    "reviewed_at_utc": "",
+    "checks": {
+      "temporal_coverage": false,
+      "missingness_and_qa": false,
+      "units_and_ranges": false,
+      "burned_area_denominator": false,
+      "mod13c2_quality_decoder": false,
+      "cell_ecoregion_area_reconciliation": false,
+      "independent_spot_checks": false
+    },
+    "review_notes": ""
+  },
+  "attribution_and_license_reviewed": false,
+  "notes": "This is a template. It cannot be used to open the locked test. Replace every placeholder with verified extraction metadata and set status=complete only after independent QA passes."
+}

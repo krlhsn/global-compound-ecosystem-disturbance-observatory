@@ -1,6 +1,11 @@
 {
-  "protocol_version": "1.0-draft",
+  "protocol_version": "1.1-draft",
   "analysis_code_sha256": "REPLACE_WITH_SHA256_OF_ANALYSIS_SCRIPT",
+  "protocol_sha256": "REPLACE_WITH_SHA256_OF_RESEARCH_PROTOCOL",
+  "monthly_input_sha256": "REPLACE_WITH_SHA256_OF_CELL_MONTHLY_CSV",
+  "crosswalk_input_sha256": "REPLACE_WITH_SHA256_OF_CELL_ECOREGION_WEIGHTS_CSV",
+  "extraction_manifest_sha256": "REPLACE_WITH_SHA256_OF_EXTRACTION_MANIFEST",
+  "prior_prediction_sha256": "REPLACE_WITH_SHA256_OF_STUDENT_AUTHORED_PRIOR",
   "thresholds_frozen": false,
   "predictors_frozen": false,
   "validation_reviewed": false,

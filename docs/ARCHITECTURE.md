@@ -14,11 +14,12 @@
 
 **Analysis**
 - analysis/feasibility_pilot.py validates input tables.
-- It derives D/F/V indicators and compound labels using training-only thresholds where specified.
+- It derives D/F/V indicators and compound labels using training-period reference thresholds.
 - It creates exact t+1 and t+3 samples using predictor information no later than origin month t.
 - It fits five regularised logistic-regression specifications with preprocessing inside each training pipeline.
 - It writes validation scores and, when supplied, fractional-area weighted ecoregion summaries.
-- Test outputs are protected by a student prior, a script-hash freeze manifest and one-time marker.
+- It can execute a preregistered 2×2×2 threshold-sensitivity grid using training/validation only.
+- Test outputs require matching hashes for code, protocol, monthly data, crosswalk, extraction manifest and author prior; a release marker is created before evaluation to prevent accidental re-opening.
 
 **Interface**
 - app/App.jsx and app/app.css are an offline React explainer.

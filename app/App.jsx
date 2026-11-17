@@ -33,7 +33,8 @@ const categories = [
   { code: "DF", title: "Drought + fire", formula: "D = 1 · F = 1 · V = 0", explanation: "Soil-moisture drought and unusually high burned-area activity occur together." },
   { code: "DV", title: "Drought + vegetation stress", formula: "D = 1 · F = 0 · V = 1", explanation: "Soil-moisture drought and low vegetation greenness occur together." },
   { code: "FV", title: "Fire + vegetation stress", formula: "D = 0 · F = 1 · V = 1", explanation: "Unusually high burned-area activity and low vegetation greenness occur together." },
-  { code: "DFV", title: "All three signals", formula: "D = 1 · F = 1 · V = 1", explanation: "All three environmental indicators cross their proposed thresholds." }
+  { code: "DFV", title: "All three signals", formula: "D = 1 · F = 1 · V = 1", explanation: "All three environmental indicators cross their proposed thresholds." },
+  { code: "NOT_EVALUABLE", title: "Not evaluable", formula: "At least one signal is missing", explanation: "The binary outcome is left missing. An unavailable indicator is never treated as a zero." }
 ];
 
 const modelRows = [
@@ -91,7 +92,7 @@ export default function App() {
         <div className="hero-foot"><span>RESEARCH STATUS</span><b>Data extraction and empirical analysis pending</b><span className="foot-mark">01 / 08</span></div>
       </section>
 
-      <div className="notice" role="status"><span className="notice-mark">!</span><p><strong>Read this before interpreting the project.</strong> This repository contains the research protocol, analysis workflow and explanatory interface. Global input rasters have not yet been extracted and quality-controlled. No empirical event counts, regional rankings or model scores are being presented.</p></div>
+      <div className="notice" role="status"><span className="notice-mark">i</span><p><strong>Research interface, not a results dashboard.</strong> This release presents the research specification and analysis software. It contains no empirical event counts, regional rankings, model scores or simulated substitutes for environmental observations.</p></div>
 
       <section className="section intro" id="main">
         <div className="section-kicker">THE RESEARCH QUESTION <span>01 — 08</span></div>
@@ -125,7 +126,7 @@ export default function App() {
           </div>
           <article className="event-detail" role="tabpanel" aria-live="polite"><span className="event-watermark">{activeCategory.code}</span><p className="eyebrow">EVENT CATEGORY</p><h3>{activeCategory.title}</h3><p>{activeCategory.explanation}</p><div className="event-rule"><span>RULE</span><code>{activeCategory.formula}</code></div></article>
         </div>
-        <p className="formula-callout"><strong>Binary target:</strong> Y = 1 when D + F + V ≥ 2; Y = 0 otherwise. If any indicator is unevaluable, Y is missing.</p>
+        <p className="formula-callout"><strong>Binary target:</strong> Y = 1 when D + F + V ≥ 2; Y = 0 otherwise. If any indicator is unevaluable, Y is missing and the category is NOT_EVALUABLE.</p>
       </section>
 
       <section className="section method-section" id="method">

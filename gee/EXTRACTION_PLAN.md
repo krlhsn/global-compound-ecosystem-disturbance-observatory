@@ -40,10 +40,12 @@ Do not assign an entire mixed cell to one ecoregion in regional summaries.
 
 ## MOD13C2 NDVI quality
 
-- Confirm NDVI and DetailedQA band definitions in the V061 product guide.
-- Apply scale factor 0.0001 after excluding fill values.
-- Implement the proposed QA bit rule in RESEARCH_PROTOCOL.md and DATA_DICTIONARY.md.
-- Calculate the share of terrestrial contributing area passing QA.
+- Confirm NDVI, DetailedQA and the pixel reliability rank band names in the V061 product guide and the current Earth Engine collection.
+- Apply scale factor 0.0001 after excluding fill value -3000.
+- Require pixel reliability rank = 0 (Good Data).
+- DetailedQA: bits 0–1 = 00, bits 2–5 ≤ 0001, bits 11–13 = 001 (land), bits 14–15 ≥ 10 (more than 50% fine-resolution contribution).
+- Do not interpret MOD13C2 bits 14–15 as snow/shadow; they encode geospatial contribution quality.
+- Calculate the share of terrestrial contributing CMG pixel area passing QA.
 - Export NDVI and its good-area fraction; retain QA counts/fractions for sensitivity checks.
 - Do not interpret a missing/low-quality observation as zero vegetation greenness.
 
@@ -52,8 +54,9 @@ Do not assign an entire mixed cell to one ecoregion in regional summaries.
 - Confirm QA bit meanings against the precise V061 guide.
 - Valid full-month land mask requires land, valid data and no shortened mapping period.
 - Calculate burned area from BurnDate > 0 under this mask.
-- Calculate valid mapped area from all pixels under the same mask, including BurnDate = 0.
-- Exclude shortened, invalid, unmapped and water pixels from both totals.
+- Treat BurnDate = 0 as reliable unburned only when QA bits 5–7 special-condition code = 0.
+- Exclude unburned pixels with non-zero special-condition codes 1–5 from the unburned denominator and export their area share separately.
+- Exclude shortened, invalid, unmapped and water pixels from numerator and denominator.
 - Export shortened-area share separately for audit.
 - Mark June 2001 unavailable for the F indicator.
 

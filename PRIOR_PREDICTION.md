@@ -1,6 +1,6 @@
 # Student Prior Prediction — not yet completed
 
-This file is intentionally left unfilled. Kamrul must write the prediction in his own words after reviewing the development/validation design but before any 2021–2024 test labels, prevalence summaries or scores are inspected.
+This is an author-only record. The project assistant must not invent or sign a personal scientific prior on Kamrul's behalf. Kamrul must write and endorse the prediction in his own words after reviewing the development/validation design but before any 2021–2024 test labels, prevalence summaries or scores are inspected.
 
 Address:
 1. Whether the combined model M4 is expected to outperform the baseline and individual-indicator models.

@@ -26,9 +26,10 @@
 | precip_mm | mm | Area-weighted monthly accumulated precipitation depth |
 | ndvi | unitless | Area-weighted NDVI after 0.0001 scale factor and QA filter |
 | ndvi_good_fraction | 0–1 | Terrestrial contributing-area share passing NDVI QA |
-| burned_area_km2 | km² | Sum of burned pixel area among valid full-month mapped terrestrial pixels |
-| valid_land_area_km2 | km² | Area of land pixels with valid data and non-shortened mapping period |
+| burned_area_km2 | km² | Burned pixel area under the full-month valid land mask |
+| valid_land_area_km2 | km² | Denominator area: burned valid land plus reliably unburned land (BurnDate = 0 and QA special-condition bits 5–7 = 0) |
 | fire_shortened_fraction | 0–1 | Terrestrial area share flagged as shortened; retained for audit |
+| fire_unburned_special_fraction | 0–1 | Terrestrial area share classified unburned with a non-zero MCD64A1 special-condition code; excluded from the burned-fraction denominator |
 
 ## Required ecoregion crosswalk
 
@@ -54,8 +55,10 @@ Use Earth Engine collection ECMWF/ERA5_LAND/MONTHLY_AGGR or the corresponding Co
 ### MOD13C2.061 NDVI
 
 - Apply NDVI scale factor 0.0001 and handle fill values before aggregation.
-- Proposed QA: DetailedQA bits 0–1 (VI Quality) = 0; bits 2–5 (VI Usefulness) ≤1; bits 11–13 indicate land; bit 14 possible snow/ice = 0; bit 15 possible shadow = 0.
-- Calculate good fraction from contributing terrestrial pixel area, not the count of pixels alone.
+- Require the product-specific pixel reliability rank (SummaryQA / pixel reliability) = 0 (Good Data).
+- DetailedQA rules: bits 0–1 = 00 (good VI quality); bits 2–5 ≤ 0001 (highest or lower usefulness rank); bits 11–13 = 001 (land); bits 14–15 ≥ 10 (more than 50% of the finer 1-km resolution contributed to the CMG pixel).
+- Important: for MOD13C2, bits 14–15 are geospatial contribution quality, not snow/ice and shadow flags. The product also has a separate pixel-reliability rank.
+- Calculate good fraction from contributing terrestrial CMG pixel area, not the count of pixels alone.
 - Require ndvi_good_fraction ≥0.80 for the primary V indicator.
 - Verify V061 band names and bit decoding against the product guide; record exact code in the manifest.
 

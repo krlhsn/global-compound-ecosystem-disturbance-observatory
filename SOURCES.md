@@ -28,7 +28,8 @@ This is the planned source register. Record actual retrieval dates, immutable as
 - DOI: https://doi.org/10.5067/MODIS/MOD13C2.061
 - Collection guide: https://lpdaac.usgs.gov/documents/621/MOD13_User_Guide_V61.pdf
 - Scale: NDVI scale factor 0.0001. Confirm valid range and fill values from the V061 guide.
-- QA: DetailedQA contains VI Quality, VI Usefulness, land/water, snow/ice and shadow fields. The proposed bit filter is documented in RESEARCH_PROTOCOL.md and DATA_DICTIONARY.md and must be verified against V061 metadata before export.
+- QA: apply the pixel reliability rank = 0 (Good Data), plus DetailedQA bits 0–1 = 00, bits 2–5 ≤ 0001, bits 11–13 = 001 (land), and bits 14–15 ≥ 10 (more than 50% of the finer 1-km resolution contributed). For MOD13C2, bits 14–15 are geospatial contribution quality, not snow/ice or shadow flags.
+- The monthly MOD13C2 guide lists NDVI fill value -3000, valid range -2000 to 10000 and scale factor 0.0001. The exact Earth Engine band names and decoded QA implementation must be recorded in the extraction manifest.
 - Attribution: retain NASA LP DAAC / MODIS product acknowledgement and citation in derivative work.
 
 ## 4. MODIS/Terra+Aqua MCD64A1.061
@@ -37,8 +38,9 @@ This is the planned source register. Record actual retrieval dates, immutable as
 - Earth Engine catalog: https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD64A1
 - User guide: https://lpdaac.usgs.gov/documents/1006/MCD64_User_Guide_V61.pdf
 - DOI: https://doi.org/10.5067/MODIS/MCD64A1.061
-- QA: bit 0 = land; bit 1 = valid data; bit 2 = shortened mapping period. Verify this against the actual product guide version used.
-- Known limitations: small burned areas may be omitted; cropland burning has lower confidence; June 2001 is heavily degraded in the product documentation.
+- QA: bit 0 = land; bit 1 = valid data; bit 2 = shortened mapping period; bits 5–7 are special-condition codes for unburned cells. BurnDate = 0 is only accepted as reliable unburned when bits 5–7 = 0. BurnDate = -1 is unmapped and -2 is water.
+- Known limitations: small burned areas may be omitted; cropland burning has lower confidence; June 2001 is heavily degraded by extended Terra MODIS outages.
+- Guide: https://lpdaac.usgs.gov/documents/1006/MCD64_User_Guide_V61.pdf
 - Use terms: the Earth Engine catalog states MODIS products acquired through LP DAAC have no restrictions on subsequent use, sale or redistribution; retain citation and attribution.
 
 ## Retrieval and processing record

@@ -23,7 +23,7 @@ from sklearn.metrics import brier_score_loss
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-PROTOCOL_VERSION = "1.0-draft"
+PROTOCOL_VERSION = "1.1-draft"
 TRAIN_START, TRAIN_END = 2001, 2016
 VALID_START, VALID_END = 2017, 2020
 TEST_START, TEST_END = 2021, 2024

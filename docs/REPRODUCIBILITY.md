@@ -22,11 +22,12 @@ A reproducible empirical run requires more than a CSV and a score table.
 
 ## Before the locked test
 
-- Complete the student's prior prediction personally.
-- Review validation output and sensitivity checks.
-- Complete the analysis freeze file with exact code hash and decisions.
+- Complete the author's prior prediction personally before any test outcome or summary is inspected.
+- Review validation output and the predefined threshold-sensitivity results.
+- Complete the extraction manifest with source asset IDs, retrieval dates, QA decoder hashes, data checksums and independent QA review.
+- Complete the analysis freeze file with exact hashes for code, protocol, monthly input, crosswalk, extraction manifest and prior.
 - Confirm no locked-test marker exists.
-- Preserve the frozen analysis script and input manifest.
+- Preserve the frozen analysis script, input manifest, crosswalk and validation outputs.
 
 ## After one-time test release
 

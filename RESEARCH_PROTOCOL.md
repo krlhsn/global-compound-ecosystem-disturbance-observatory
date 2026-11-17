@@ -1,4 +1,4 @@
-# Research Protocol — Version 1.0-draft
+# Research Protocol — Version 1.1-draft
 
 **Project:** When Ecosystem Disturbances Compound  
 **Course context:** Stanford Probability for AI, Fall 2026  
@@ -46,23 +46,27 @@ This is a root-zone soil-moisture proxy, not a universal measure of meteorologic
 
 1. Use MCD64A1.061 monthly burned-area observations.
 2. A pixel contributes to the valid mapped terrestrial denominator only when QA bit 0 indicates land, bit 1 indicates valid data and bit 2 indicates that the mapping period was not shortened.
-3. Burned area is the area of valid full-month pixels with BurnDate > 0. Valid unburned land is BurnDate = 0 only inside this same mask.
-4. Exclude water, invalid/unmapped pixels and shortened-period pixels from both numerator and denominator. Never convert these pixels to unburned.
-5. Require valid full-month mapped terrestrial area to cover at least 80% of the cell's terrestrial land area. A nonzero shortened-area fraction does not automatically invalidate the whole coarse cell if the remaining valid coverage passes this rule.
-6. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001–2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
-7. Set F=1 when a valid positive fraction is at or above its applicable threshold; set F=0 for valid observations below threshold, including valid zero-burn months.
-8. Treat June 2001 as unavailable for F because the MCD64A1 record for that month is documented as heavily degraded by a Terra MODIS outage.
+3. Burned area is the area of valid full-month pixels with BurnDate > 0.
+4. For unburned pixels (BurnDate = 0), require the MCD64A1 QA special-condition code in bits 5–7 to equal 0. Codes 1–5 flag special circumstances behind an unburned classification; those pixels are unevaluable and are excluded from the unburned denominator.
+5. Exclude water, invalid/unmapped pixels, shortened-period pixels and special-condition unburned pixels from the corresponding numerator/denominator. Never convert these pixels to unburned.
+6. Define valid_land_area_km2 as the area of full-month valid land pixels that are burned (BurnDate > 0) or reliably unburned (BurnDate = 0 and bits 5–7 = 0). Exclude special-condition unburned pixels and record their area fraction separately.
+7. Require valid full-month mapped terrestrial area to cover at least 80% of the cell's terrestrial land area. A nonzero shortened-area fraction does not automatically invalidate the whole coarse cell if the remaining valid coverage passes this rule.
+8. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001–2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
+9. Set F=1 when a valid positive fraction is at or above its applicable threshold; set F=0 for valid observations below threshold, including reliable zero-burn months.
+10. Treat June 2001 as unavailable for F because the MCD64A1 record for that month is documented as heavily degraded by a Terra MODIS outage.
 
 This definition detects locally unusual burned-area activity. It does not determine fire cause and does not equate every mapped burn with wildfire. Small burns may be omitted and cropland burning has lower confidence.
 
 ### V — Vegetation-greenness stress proxy
 
 1. Use MOD13C2.061 monthly NDVI and apply the 0.0001 scale factor.
-2. Proposed primary QA rule: DetailedQA bits 0–1 (VI Quality) = 0; bits 2–5 (VI Usefulness) ≤1; bits 11–13 indicate land; bit 14 (possible snow/ice) = 0; bit 15 (possible shadow) = 0.
-3. Verify exact V061 band names, fill values and bit decoding against product documentation before extraction. Record the implemented decoder and code hash.
-4. Calculate the fraction of contributing terrestrial pixel area passing the QA filter; require at least 80%.
-5. Calculate the cell's calendar-month anomaly against its 2001–2016 reference mean and standard deviation. Require at least 12 valid reference values and a positive standard deviation.
-6. Set V=1 when the standardised anomaly is ≤−0.5; otherwise V=0 when valid.
+2. Apply the product-specific pixel reliability rank (SummaryQA / pixel reliability) = 0 (Good Data).
+3. In DetailedQA, require bits 0–1 (VI Quality) = 00, bits 2–5 (VI Usefulness) ≤ 0001, bits 11–13 (Land/Water Mask) = 001 (land), and bits 14–15 (Geospatial Quality) ≥ 10 (more than 50% of the finer 1-km resolution contributed to the CMG pixel).
+4. For MOD13C2, bits 14–15 are geospatial contribution quality. They are not the snow/ice and shadow flags used in other MOD13 products. Do not apply that incorrect interpretation to MOD13C2.
+5. Verify exact V061 band names, fill values and bit decoding against the product guide before extraction. Record the implemented decoder and code hash.
+6. Calculate the fraction of contributing terrestrial CMG pixel area passing all QA rules; require at least 80%.
+7. Calculate the cell's calendar-month anomaly against its 2001–2016 reference mean and standard deviation. Require at least 12 valid reference values and a positive standard deviation.
+8. Set V=1 when the standardised anomaly is ≤−0.5; otherwise V=0 when valid.
 
 NDVI is a vegetation-greenness proxy, not a direct measure of ecosystem health. It responds to phenology, land management, disturbance, snow, cloud and other influences.
 
@@ -169,4 +173,4 @@ The products are proxies with documented limitations. RESOLVE boundaries are sta
 
 **Pending:** global raster extraction, source-level QA verification, real-data pilot, model validation, sensitivity results, student's prior, protocol freeze and locked-test release.
 
-The research protocol remains a draft. Do not claim empirical success, model validation or operational warning capability until those steps are complete.
+The research protocol is version 1.1-draft. Its product-specific QA rules are specified, but they still require independent verification against the exact export implementation and source metadata before empirical interpretation. Do not claim empirical success, model validation or operational warning capability until those steps are complete.
