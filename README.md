@@ -26,15 +26,15 @@ The repository contains a documented research specification, Python analysis wor
 
 Can multiple environmental indicators estimate the probability of compound ecosystem disturbances across global terrestrial ecosystems, and how does predictive performance vary across ecological regions and forecast lead times?
 
-The proposed retrospective study uses a 0.5° terrestrial grid and monthly observations. The target period is **May 2001–December 2024**. Earlier ERA5-Land records are required for the fixed soil-moisture reference.
+The proposed retrospective study uses a 0.5° terrestrial grid and monthly observations. The target period is **May 2001-December 2024**. Earlier ERA5-Land records are required for the fixed soil-moisture reference.
 
 ## Environmental indicators
 
 | Signal | Dataset and proxy | Proposed event threshold |
 |---|---|---|
-| **D — Drought** | ERA5-Land depth-weighted root-zone soil-moisture proxy, smoothed over three months | Standardised anomaly ≤ −1.0 SD against the fixed 1981–2000 calendar-month reference |
-| **F — Fire activity** | MCD64A1.061 burned-area fraction over valid, full-month mapped land | At or above the 90th percentile of positive training-period fractions by ecoregion × calendar month, with a biome fallback |
-| **V — Vegetation stress** | MOD13C2.061 NDVI anomaly, with product-specific pixel QA | Standardised anomaly ≤ −0.5 SD against the 2001–2016 cell/calendar-month reference and at least 80% good-quality contributing area |
+| **D - Drought** | ERA5-Land depth-weighted root-zone soil-moisture proxy, smoothed over three months | Standardised anomaly ≤ −1.0 SD against the fixed 1981-2000 calendar-month reference |
+| **F - Fire activity** | MCD64A1.061 burned-area fraction over valid, full-month mapped land | At or above the 90th percentile of positive training-period fractions by ecoregion × calendar month, with a biome fallback |
+| **V - Vegetation stress** | MOD13C2.061 NDVI anomaly, with product-specific pixel QA | Standardised anomaly ≤ −0.5 SD against the 2001–2016 cell/calendar-month reference and at least 80% good-quality contributing area |
 
 These are operational proxies, not interchangeable measures of drought, wildfire or ecosystem condition. Missing or unevaluable indicators remain missing.
 
