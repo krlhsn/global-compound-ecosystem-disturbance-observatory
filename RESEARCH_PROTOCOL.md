@@ -1,9 +1,9 @@
-# Research Protocol — Version 1.1-draft
+# Research Protocol - Version 1.1-draft
 
 **Project:** When Ecosystem Disturbances Compound  
 **Course context:** Stanford Probability for AI, Fall 2026  
 **Status:** Complete pre-analysis specification for the research framework; empirical results are not part of this software release  
-**Study target period:** May 2001–December 2024  
+**Study target period:** May 2001-December 2024  
 **Forecast horizons:** Exact t+1 and exact t+3
 
 ## 1. Research question
@@ -15,10 +15,10 @@ This is an exploratory retrospective forecasting experiment, not a validated ope
 ## 2. Study design
 
 - Spatial scope: global terrestrial land.
-- Main spatial unit: 0.5° × 0.5° latitude–longitude grid cell.
+- Main spatial unit: 0.5° × 0.5° latitude-longitude grid cell.
 - Ecological context: RESOLVE Ecoregions 2017 (846 terrestrial ecoregions, 14 biomes and 8 realms).
-- Target months: May 2001–December 2024.
-- Input history: October 1980–December 2024. October 1980 permits the first three-month rolling value entering the January 1981 soil-moisture reference.
+- Target months: May 2001-December 2024.
+- Input history: October 1980-December 2024. October 1980 permits the first three-month rolling value entering the January 1981 soil-moisture reference.
 - Primary horizon: outcome in the exact month t+1, using information available through origin month t.
 - Secondary horizon: outcome in the exact month t+3, using the same information cutoff t.
 - Optional exploratory horizon: at least one event in any of t+1, t+2 or t+3. This is a separate outcome and must never be substituted for exact t+3.
@@ -29,7 +29,7 @@ The same target-month window is used for both horizons. Samples are assigned to 
 
 All three definitions are proposed operational proxies and require review after the development-only extraction and QA pilot.
 
-### D — Root-zone soil-moisture drought proxy
+### D - Root-zone soil-moisture drought proxy
 
 1. Use ERA5-Land volumetric soil-water layers 1–3, representing 0–7 cm, 7–28 cm and 28–100 cm.
 2. Compute the depth-weighted 0–100 cm proxy:
@@ -37,28 +37,28 @@ All three definitions are proposed operational proxies and require review after 
    rootzone_sm = 0.07*swvl1 + 0.21*swvl2 + 0.72*swvl3
 
 3. Calculate the rolling three-month mean ending in each month.
-4. Standardise against the 1981–2000 distribution for the matching grid cell and calendar-ending month. Require at least 15 valid reference values and a positive reference standard deviation.
+4. Standardise against the 1981-2000 distribution for the matching grid cell and calendar-ending month. Require at least 15 valid reference values and a positive reference standard deviation.
 5. Set D=1 when the standardised anomaly is ≤−1.0; otherwise D=0 when valid.
 
 This is a root-zone soil-moisture proxy, not a universal measure of meteorological, hydrological or agricultural drought.
 
-### F — Unusually high burned-area activity
+### F - Unusually high burned-area activity
 
 1. Use MCD64A1.061 monthly burned-area observations.
 2. A pixel contributes to the valid mapped terrestrial denominator only when QA bit 0 indicates land, bit 1 indicates valid data and bit 2 indicates that the mapping period was not shortened.
 3. Burned area is the area of valid full-month pixels with BurnDate > 0.
-4. For unburned pixels (BurnDate = 0), require the MCD64A1 QA special-condition code in bits 5–7 to equal 0. Codes 1–5 flag special circumstances behind an unburned classification; those pixels are unevaluable and are excluded from the unburned denominator.
+4. For unburned pixels (BurnDate = 0), require the MCD64A1 QA special-condition code in bits 5-7 to equal 0. Codes 1-5 flag special circumstances behind an unburned classification; those pixels are unevaluable and are excluded from the unburned denominator.
 5. Exclude water, invalid/unmapped pixels, shortened-period pixels and special-condition unburned pixels from the corresponding numerator/denominator. Never convert these pixels to unburned.
 6. Define valid_land_area_km2 as the area of full-month valid land pixels that are burned (BurnDate > 0) or reliably unburned (BurnDate = 0 and bits 5–7 = 0). Exclude special-condition unburned pixels and record their area fraction separately as fire_unburned_special_fraction, expressed as a fraction of cell terrestrial land area.
 7. The valid-land, special-condition-unburned and shortened-period land-area fractions are mutually exclusive components and must sum to no more than 1.00 (allowing a 0.001 numerical tolerance).
 8. Require valid full-month mapped terrestrial area to cover at least 80% of the cell's terrestrial land area. A nonzero shortened-area fraction does not automatically invalidate the whole coarse cell if the remaining valid coverage passes this rule.
-9. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001–2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
+9. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001-2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
 10. Set F=1 when a valid positive fraction is at or above its applicable threshold; set F=0 for valid observations below threshold, including reliable zero-burn months.
 11. Treat June 2001 as unavailable for F because the MCD64A1 record for that month is documented as heavily degraded by a Terra MODIS outage.
 
 This definition detects locally unusual burned-area activity. It does not determine fire cause and does not equate every mapped burn with wildfire. Small burns may be omitted and cropland burning has lower confidence.
 
-### V — Vegetation-greenness stress proxy
+### V - Vegetation-greenness stress proxy
 
 1. Use MOD13C2.061 monthly NDVI and apply the 0.0001 scale factor.
 2. Apply the product-specific pixel reliability rank (SummaryQA / pixel reliability) = 0 (Good Data).
@@ -66,7 +66,7 @@ This definition detects locally unusual burned-area activity. It does not determ
 4. For MOD13C2, bits 14–15 are geospatial contribution quality. They are not the snow/ice and shadow flags used in other MOD13 products. Do not apply that incorrect interpretation to MOD13C2.
 5. Verify exact V061 band names, fill values and bit decoding against the product guide before extraction. Record the implemented decoder and code hash.
 6. Calculate the fraction of contributing terrestrial CMG pixel area passing all QA rules; require at least 80%.
-7. Calculate the cell's calendar-month anomaly against its 2001–2016 reference mean and standard deviation. Require at least 12 valid reference values and a positive standard deviation.
+7. Calculate the cell's calendar-month anomaly against its 2001-2016 reference mean and standard deviation. Require at least 12 valid reference values and a positive standard deviation.
 8. Set V=1 when the standardised anomaly is ≤−0.5; otherwise V=0 when valid.
 
 NDVI is a vegetation-greenness proxy, not a direct measure of ecosystem health. It responds to phenology, land management, disturbance, snow, cloud and other influences.
@@ -108,11 +108,11 @@ Create separate samples for horizons h∈{1,3}; each target is the outcome in th
 
 | Split | Target years | Use |
 |---|---:|---|
-| Training | 2001–2016 | Estimate training-referenced NDVI/fire thresholds and fit models |
-| Validation | 2017–2020 | Review behaviour, sensitivity and calibration; freeze design |
-| Locked test | 2021–2024 | One-time evaluation after prior and analysis freeze |
+| Training | 2001-2016 | Estimate training-referenced NDVI/fire thresholds and fit models |
+| Validation | 2017-2020 | Review behaviour, sensitivity and calibration; freeze design |
+| Locked test | 2021-2024 | One-time evaluation after prior and analysis freeze |
 
-Assign by target year. The soil-moisture reference is fixed at 1981–2000. For the one-time test evaluation, refit unchanged specifications on training + validation (target years 2001–2020) and score only 2021–2024.
+Assign by target year. The soil-moisture reference is fixed at 1981–2000. For the one-time test evaluation, refit unchanged specifications on training + validation (target years 2001-2020) and score only 2021-2024.
 
 ## 8. Model comparison
 
@@ -120,11 +120,11 @@ Use regularised logistic regression, with all imputation, scaling and categorica
 
 | Model | Predictors |
 |---|---|
-| M0 — seasonal baseline | Biome and target calendar month |
-| M1 — drought-only | Baseline + soil-moisture anomaly and D history |
-| M2 — fire-history-only | Baseline + burned-area fraction and F history |
-| M3 — vegetation-only | Baseline + NDVI anomaly and V history |
-| M4 — combined | Baseline + D/F/V histories + temperature and precipitation histories |
+| M0 - seasonal baseline | Biome and target calendar month |
+| M1 - drought-only | Baseline + soil-moisture anomaly and D history |
+| M2 - fire-history-only | Baseline + burned-area fraction and F history |
+| M3 - vegetation-only | Baseline + NDVI anomaly and V history |
+| M4 - combined | Baseline + D/F/V histories + temperature and precipitation histories |
 
 Each history contains the origin month and the two preceding months. Fit separate models for t+1 and t+3. Do not use class weights unless a separately justified calibration correction is specified and evaluated.
 
@@ -157,7 +157,7 @@ Do not select model settings based on locked-test performance.
 
 ## 11. Student prior and locked-test release
 
-Before any 2021–2024 test label, prevalence summary or score is inspected, the student must write a prediction in their own words addressing:
+Before any 2021-2024 test label, prevalence summary or score is inspected, the student must write a prediction in their own words addressing:
 1. Whether M4 is expected to outperform M0 and the individual-indicator models.
 2. Whether t+3 performance is expected to be lower, similar or higher than t+1.
 3. The reasoning and confidence behind those expectations.
