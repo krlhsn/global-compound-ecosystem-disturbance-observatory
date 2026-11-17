@@ -16,7 +16,7 @@
 
 **When Ecosystem Disturbances Compound** investigates whether drought, unusually high burned-area activity and vegetation-greenness stress can be combined to estimate the probability of compound environmental disturbance across global terrestrial ecosystems.
 
-[Read the project story](PROJECT_STORY.md) — the research question, the reasoning behind the study design, and what has and has not been measured so far.
+[Read the project story](PROJECT_STORY.md) - the research question, the reasoning behind the study design, and what has and has not been measured so far.
 
 The repository contains a documented research specification, Python analysis workflow, offline React explainer, data contract, quality-control rules, source register, reproducibility safeguards and automated software checks.
 
@@ -59,9 +59,9 @@ For an origin month *t*, predictors use information available through *t*, inclu
 
 | Period | Target years | Role |
 |---|---:|---|
-| Training | 2001–2016 | Estimate training-referenced thresholds and fit models |
-| Validation | 2017–2020 | Review model behaviour and freeze design decisions |
-| Locked test | 2021–2024 | One-time evaluation after the prior and analysis freeze |
+| Training | 2001-2016 | Estimate training-referenced thresholds and fit models |
+| Validation | 2017-2020 | Review model behaviour and freeze design decisions |
+| Locked test | 2021-2024 | One-time evaluation after the prior and analysis freeze |
 
 The split is assigned by **target month**, not by predictor-origin year.
 
@@ -71,11 +71,11 @@ Five regularised logistic-regression specifications are evaluated separately at 
 
 | Model | Predictor information |
 |---|---|
-| **M0 — Seasonal baseline** | Biome and target calendar month |
-| **M1 — Drought-only** | Baseline + soil-moisture anomaly and drought history |
-| **M2 — Fire-history-only** | Baseline + burned-area fraction and fire history |
-| **M3 — Vegetation-only** | Baseline + NDVI anomaly and vegetation-stress history |
-| **M4 — Combined** | D/F/V histories + temperature and precipitation histories |
+| **M0 - Seasonal baseline** | Biome and target calendar month |
+| **M1 - Drought-only** | Baseline + soil-moisture anomaly and drought history |
+| **M2 - Fire-history-only** | Baseline + burned-area fraction and fire history |
+| **M3 - Vegetation-only** | Baseline + NDVI anomaly and vegetation-stress history |
+| **M4 - Combined** | D/F/V histories + temperature and precipitation histories |
 
 Primary evaluation uses mean and total log₁₀ likelihood. Brier score and calibration gap provide complementary views of probabilistic quality. Event prevalence and evaluable sample counts accompany every score. Regional metrics use fractional cell–ecoregion area weights and minimum event/non-event sample requirements. Spatial-tile × target-year block bootstrap intervals are an approximation and are interpreted with tile-size sensitivity checks.
 
@@ -145,7 +145,7 @@ Product-specific QA, data access, attribution and known limitations are recorded
 
 This is a retrospective research framework, not an operational early-warning service, ecological diagnosis, fire-detection system or conservation decision tool. NDVI is a greenness proxy; burned area is not synonymous with wildfire; soil moisture is one drought-related signal. Spatial aggregation, source QA, temporal coverage, ecological heterogeneity, missingness and confounding can all affect conclusions.
 
-A predicted probability is conditional on the data and model specification. It is not a causal explanation and does not establish that a disturbance will occur. The 2021–2024 test is protected from design decisions until an author-authored prior and analysis freeze are recorded. The personal prior is supplied privately at analysis time and is not stored in the public repository.
+A predicted probability is conditional on the data and model specification. It is not a causal explanation and does not establish that a disturbance will occur. The 2021-2024 test is protected from design decisions until an author-authored prior and analysis freeze are recorded. The personal prior is supplied privately at analysis time and is not stored in the public repository.
 
 ## Author
 
@@ -158,4 +158,4 @@ Original code and documentation are released under the [MIT License](LICENSE). U
 
 ---
 
-<p align="center"><em>Compound risk is a question of overlapping signals — and of being honest about what those signals can tell us.</em></p>
+<p align="center"><em>Compound risk is a question of overlapping signals and of being honest about what those signals can tell us.</em></p>
