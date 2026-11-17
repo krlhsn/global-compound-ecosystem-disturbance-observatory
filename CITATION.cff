@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this research framework, please cite the repository and the upstream datasets used in your analysis."
+title: "When Ecosystem Disturbances Compound"
+type: software
+authors:
+  - family-names: Hassan
+    given-names: Kamrul
+version: 0.1.0
+date-released: 2026-11-18
+repository-code: "https://github.com/krlhsn/global-compound-ecosystem-disturbance-observatory"
+abstract: "A retrospective research framework for evaluating probabilistic relationships between drought, burned-area activity and vegetation-greenness stress across global terrestrial ecosystems."
+keywords:
+  - compound ecosystem disturbance
+  - environmental indicators
+  - probabilistic modelling
+  - logistic regression
+  - remote sensing
+  - calibration
+license: MIT

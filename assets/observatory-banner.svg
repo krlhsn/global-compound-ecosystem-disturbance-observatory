@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="420" viewBox="0 0 1600 420" role="img" aria-labelledby="title desc">
+  <title id="title">When Ecosystem Disturbances Compound</title>
+  <desc id="desc">An abstract global ecosystem motif combining a globe grid, vegetation contours, drought rings and a fire-coloured signal path.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#18382d"/><stop offset="1" stop-color="#315b45"/></linearGradient>
+    <radialGradient id="orb"><stop offset="0" stop-color="#dce4c9"/><stop offset=".7" stop-color="#8fae8e"/><stop offset="1" stop-color="#47745a"/></radialGradient>
+    <linearGradient id="signal" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#d6a27a"/><stop offset=".5" stop-color="#e8c79b"/><stop offset="1" stop-color="#a5bd91"/></linearGradient>
+    <clipPath id="globe"><circle cx="1210" cy="205" r="154"/></clipPath>
+  </defs>
+  <rect width="1600" height="420" rx="22" fill="url(#bg)"/>
+  <path d="M0 330 C260 235 430 460 720 350 S1160 280 1600 365" fill="none" stroke="#a9c19b" stroke-opacity=".12" stroke-width="2"/>
+  <path d="M0 365 C260 270 430 495 720 385 S1160 315 1600 400" fill="none" stroke="#a9c19b" stroke-opacity=".10" stroke-width="2"/>
+  <g fill="none" stroke="#b8c8aa" stroke-opacity=".18">
+    <circle cx="1210" cy="205" r="183"/><circle cx="1210" cy="205" r="210"/><ellipse cx="1210" cy="205" rx="154" ry="66"/><ellipse cx="1210" cy="205" rx="66" ry="154"/>
+  </g>
+  <g clip-path="url(#globe)">
+    <circle cx="1210" cy="205" r="154" fill="url(#orb)"/>
+    <path d="M1050 110 Q1120 72 1160 114 L1180 151 1150 179 1112 173 1092 207 1058 188Z" fill="#54795b"/>
+    <path d="M1180 207 L1221 193 1245 223 1232 260 1206 313 1182 283 1171 245Z" fill="#557a5e"/>
+    <path d="M1270 100 Q1316 92 1352 133 L1331 168 1294 174 1278 157 1250 157Z" fill="#54795b"/>
+    <path d="M1040 0H1380V410H1040Z" fill="none" stroke="#234c3b" stroke-opacity=".3"/>
+    <g stroke="#254e3d" stroke-opacity=".28" fill="none">
+      <path d="M1040 80H1380M1040 130H1380M1040 180H1380M1040 230H1380M1040 280H1380M1040 330H1380"/>
+      <path d="M1080 30V380M1130 30V380M1180 30V380M1230 30V380M1280 30V380M1330 30V380"/>
+    </g>
+    <path d="M1070 235 C1120 166 1160 258 1210 195 S1300 155 1350 225" stroke="#d2a079" stroke-width="5" fill="none"/>
+    <path d="M1070 247 C1120 178 1160 270 1210 207 S1300 167 1350 237" stroke="#f2d9ad" stroke-opacity=".85" stroke-width="1.5" fill="none"/>
+    <circle cx="1128" cy="187" r="7" fill="#d8a47e"/><circle cx="1210" cy="195" r="8" fill="#bb7254"/><circle cx="1300" cy="183" r="7" fill="#e2c68f"/>
+  </g>
+  <g transform="translate(88 88)">
+    <text x="0" y="0" fill="#d6a27a" font-family="Arial,sans-serif" font-size="15" font-weight="700" letter-spacing="5">GLOBAL ENVIRONMENTAL RESEARCH</text>
+    <text x="0" y="94" fill="#f3f4eb" font-family="Georgia,serif" font-size="61">When Ecosystem</text>
+    <text x="0" y="163" fill="#e6b48d" font-family="Georgia,serif" font-size="61" font-style="italic">Disturbances Compound</text>
+    <text x="2" y="213" fill="#c4d1c3" font-family="Arial,sans-serif" font-size="18">Drought  ×  Burned area  ×  Vegetation stress</text>
+    <path d="M0 252H610" stroke="url(#signal)" stroke-width="2"/>
+    <text x="0" y="290" fill="#aebfad" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">OBSERVE THE SIGNALS  ·  MODEL THE OVERLAP  ·  RESPECT THE UNCERTAINTY</text>
+  </g>
+  <g fill="none" stroke="url(#signal)" stroke-width="2">
+    <path d="M850 90 C910 20 970 20 1030 90"/><path d="M840 320 C920 390 990 390 1060 320"/>
+  </g>
+  <g font-family="Arial,sans-serif" font-weight="700" font-size="12">
+    <circle cx="870" cy="105" r="20" fill="#d7a17b"/><text x="870" y="109" text-anchor="middle" fill="#19392d">D</text>
+    <circle cx="1000" cy="305" r="20" fill="#bb7254"/><text x="1000" y="309" text-anchor="middle" fill="#fff">F</text>
+    <circle cx="1375" cy="96" r="20" fill="#9bb88b"/><text x="1375" y="100" text-anchor="middle" fill="#19392d">V</text>
+  </g>
+</svg>

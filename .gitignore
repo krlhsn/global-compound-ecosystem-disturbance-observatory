@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+
+# Research inputs and generated outputs
+data/raw/
+data/processed/
+data/private/
+pilot_outputs/
+outputs/
+*.parquet
+*.geojson
+*.tif
+*.tiff
+*.nc
+*.hdf
+*.h5
+.locked_test_opened.txt
+LOCKED_TEST_OPENED.txt
+analysis_freeze.json
+
+# Node / Vite
+node_modules/
+.vite/
+coverage/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

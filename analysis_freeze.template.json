@@ -1,0 +1,10 @@
+{
+  "protocol_version": "1.0-draft",
+  "analysis_code_sha256": "REPLACE_WITH_SHA256_OF_ANALYSIS_SCRIPT",
+  "thresholds_frozen": false,
+  "predictors_frozen": false,
+  "validation_reviewed": false,
+  "student_prior_completed": false,
+  "freeze_date": "",
+  "student_notes": ""
+}
