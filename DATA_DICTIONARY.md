@@ -3,8 +3,8 @@
 ## Observation and time coverage
 
 - Main observation: one 0.5° grid cell × calendar month.
-- Target dates: May 2001–December 2024.
-- Input history: October 1980–December 2024.
+- Target dates: May 2001-December 2024.
+- Input history: October 1980-December 2024.
 - Every cell/month row must be retained, even when an upstream product is unavailable. Encode unavailable values as NA, never as zero.
 - Store source version, asset ID, projection, export date, QA implementation, processing-code hash and checksums in the extraction manifest.
 
@@ -21,15 +21,15 @@
 | biome_name | string | Dominant biome context; mixed-cell rule must be documented |
 | realm | string | Dominant realm context; mixed-cell rule must be documented |
 | ecoregion_fraction | 0–1 | Dominant ecoregion land-area share; descriptive only |
-| swvl1, swvl2, swvl3 | m³/m³ | Area-weighted volumetric soil water for 0–7, 7–28 and 28–100 cm |
+| swvl1, swvl2, swvl3 | m³/m³ | Area-weighted volumetric soil water for 0–7, 7-28 and 28–100 cm |
 | t2m_c | °C | Area-weighted monthly mean 2 m air temperature |
 | precip_mm | mm | Area-weighted monthly accumulated precipitation depth |
 | ndvi | unitless | Area-weighted NDVI after 0.0001 scale factor and QA filter |
 | ndvi_good_fraction | 0–1 | Terrestrial contributing-area share passing NDVI QA |
 | burned_area_km2 | km² | Burned pixel area under the full-month valid land mask |
 | valid_land_area_km2 | km² | Denominator area: burned valid land plus reliably unburned land (BurnDate = 0 and QA special-condition bits 5–7 = 0) |
-| fire_shortened_fraction | 0–1 | Terrestrial area share flagged as shortened; retained for audit |
-| fire_unburned_special_fraction | 0–1 | Share of cell terrestrial area in full-month valid land pixels classified unburned with a non-zero MCD64A1 special-condition code; excluded from the burned-fraction denominator |
+| fire_shortened_fraction | 0-1 | Terrestrial area share flagged as shortened; retained for audit |
+| fire_unburned_special_fraction | 0-1 | Share of cell terrestrial area in full-month valid land pixels classified unburned with a non-zero MCD64A1 special-condition code; excluded from the burned-fraction denominator |
 
 ## Required ecoregion crosswalk
 
