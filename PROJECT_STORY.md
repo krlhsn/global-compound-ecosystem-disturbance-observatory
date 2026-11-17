@@ -53,7 +53,8 @@ For now, this project is a documented and testable research framework. Its centr
 ---
 
 **Project:** [When Ecosystem Disturbances Compound on GitHub](https://github.com/krlhsn/global-compound-ecosystem-disturbance-observatory)  
-**Course context:** Stanford Code in Place Probability for AI, Fall 2026  
+---
+**Course context:** Stanford Code in Place Probability for AI, Fall 2026 
 **Author:** Kamrul Hassan
-
+---
 **Research status:** The pre-analysis framework and software are implemented. Empirical global data extraction and model evaluation have not yet been completed.
