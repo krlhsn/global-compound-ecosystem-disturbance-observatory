@@ -141,7 +141,7 @@ Input rows must be retained when a product is unavailable; missing observations 
 The study specification uses the following official products:
 
 - [ERA5-Land monthly aggregated data](https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_MONTHLY_AGGR) for soil water, temperature and precipitation.
-- [MOD13C2.061](https://doi.org/10.5067/MODIS/MOD13C2.061) for monthly NDVI and vegetation-index quality.
+- [MOD13C2.061](https://doi.org/10.5067/MODIS/MOD13C2.061) from NASA LP DAAC / USGS Earthdata for monthly NDVI and vegetation-index quality. The current reviewed Earth Engine MODIS catalogue did not confirm a MOD13C2.061 collection ID, so the extraction plan does not assume one.
 - [MCD64A1.061](https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD64A1) for monthly burned area and pixel-level quality.
 - [RESOLVE Ecoregions 2017](https://developers.google.com/earth-engine/datasets/catalog/RESOLVE_ECOREGIONS_2017) for ecological regions, biomes and realms.
 

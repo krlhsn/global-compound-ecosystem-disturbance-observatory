@@ -22,8 +22,8 @@ const signals = [
     id: "V",
     title: "Vegetation-greenness stress",
     source: "MOD13C2.061 · monthly NDVI",
-    rule: "V = 1 when the cell/calendar-month NDVI anomaly is at or below −0.5 SD against the 2001–2016 reference, with at least 80% good-quality coverage.",
-    caution: "NDVI is a greenness proxy, not a direct measurement of ecosystem health.",
+    rule: "V = 1 when the cell/calendar-month NDVI anomaly is at or below −0.5 SD against the 2001–2016 reference. At least 80% of contributing area must pass the MOD13C2.061 pixel-reliability and DetailedQA filters.",
+    caution: "MOD13C2 uses product-specific geospatial-contribution flags in DetailedQA bits 14–15; these are not snow/shadow flags. NDVI remains a greenness proxy, not a direct measurement of ecosystem health.",
     accent: "leaf"
   }
 ];
@@ -47,7 +47,7 @@ const modelRows = [
 
 const sources = [
   ["ERA5-Land monthly aggregates", "Soil water, temperature and precipitation", "https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_LAND_MONTHLY_AGGR"],
-  ["MOD13C2.061", "Monthly NDVI and vegetation-index quality", "https://doi.org/10.5067/MODIS/MOD13C2.061"],
+  ["MOD13C2.061", "NASA LP DAAC monthly NDVI and pixel-quality product", "https://doi.org/10.5067/MODIS/MOD13C2.061"],
   ["MCD64A1.061", "Monthly burned area and pixel-level quality", "https://developers.google.com/earth-engine/datasets/catalog/MODIS_061_MCD64A1"],
   ["RESOLVE Ecoregions 2017", "846 terrestrial ecoregions, 14 biomes and 8 realms", "https://developers.google.com/earth-engine/datasets/catalog/RESOLVE_ECOREGIONS_2017"]
 ];
@@ -78,7 +78,7 @@ export default function App() {
           <p className="eyebrow">GLOBAL ENVIRONMENTAL RESEARCH · PROBABILITY FOR AI</p>
           <h1>When ecosystems<br /><em>disturb together.</em></h1>
           <p className="hero-lede">Can drought, burned-area activity and vegetation stress reveal a compound disturbance signal across the world's terrestrial ecosystems?</p>
-          <div className="hero-actions"><a className="primary-link" href="#method">Explore the framework <span>↗</span></a><a className="secondary-link" href="RESEARCH_PROTOCOL.md">Read the research protocol</a></div>
+          <div className="hero-actions"><a className="primary-link" href="#method">Explore the framework <span>↗</span></a><a className="secondary-link" href="https://github.com/krlhsn/global-compound-ecosystem-disturbance-observatory/blob/main/RESEARCH_PROTOCOL.md" target="_blank" rel="noreferrer">Read the research protocol ↗</a></div>
           <div className="hero-meta"><span>0.5° global grid</span><b>·</b><span>Monthly observations</span><b>·</b><span>2001–2024 target window</span></div>
         </div>
         <div className="hero-visual" role="img" aria-label="Abstract globe with overlapping drought, fire and vegetation signals">
@@ -89,7 +89,7 @@ export default function App() {
           <div className="signal-tag tag-v"><b>V</b><span>GREENNESS</span></div>
           <div className="visual-caption">THREE PROXIES · ONE PROBABILISTIC QUESTION</div>
         </div>
-        <div className="hero-foot"><span>RESEARCH STATUS</span><b>Data extraction and empirical analysis pending</b><span className="foot-mark">01 / 08</span></div>
+        <div className="hero-foot"><span>RESEARCH FRAMEWORK</span><b>Remote-sensing indicators · probabilistic models · ecological regions</b><span className="foot-mark">01 / 08</span></div>
       </section>
 
       <div className="notice" role="status"><span className="notice-mark">i</span><p><strong>Research interface, not a results dashboard.</strong> This release presents the research specification and analysis software. It contains no empirical event counts, regional rankings, model scores or simulated substitutes for environmental observations.</p></div>
@@ -158,18 +158,26 @@ export default function App() {
       </section>
 
       <section className="section status-section">
-        <div className="section-kicker">PROJECT READINESS <span>07 — 08</span></div>
-        <div className="section-heading"><h2>Method implemented.<br /><em>Evidence still to collect.</em></h2><p>Software completeness and empirical completeness are different things. The current project status keeps that distinction visible.</p></div>
-        <div className="status-grid"><div className="status-item complete"><span>01</span><b>Research question and protocol</b><small>Specified in version 1.0-draft</small><em>DOCUMENTED</em></div><div className="status-item complete"><span>02</span><b>Analysis and release gate</b><small>Implemented; automated tests included</small><em>IMPLEMENTED</em></div><div className="status-item complete"><span>03</span><b>Offline research interface</b><small>Explainer only; no empirical charts</small><em>IMPLEMENTED</em></div><div className="status-item pending"><span>04</span><b>Global raster extraction</b><small>Earth Engine project and exports required</small><em>PENDING</em></div><div className="status-item pending"><span>05</span><b>Real-data pilot and QA review</b><small>No empirical outputs are available yet</small><em>PENDING</em></div><div className="status-item pending"><span>06</span><b>Frozen test and empirical results</b><small>Prior, freeze and one-time release remain</small><em>NOT OPENED</em></div></div>
+        <div className="section-kicker">RESEARCH SOFTWARE <span>07 — 08</span></div>
+        <div className="section-heading"><h2>A complete framework<br /><em>for a testable question.</em></h2><p>The repository brings the research specification, data contract, analysis code, interface and reproducibility safeguards together as one versioned project.</p></div>
+        <div className="status-grid">
+          <div className="status-item complete"><span>01</span><b>Research specification</b><small>Question, indicators, event definition and forecast horizons</small><em>DOCUMENTED</em></div>
+          <div className="status-item complete"><span>02</span><b>Source and QA contract</b><small>Product versions, quality rules, units and provenance</small><em>DOCUMENTED</em></div>
+          <div className="status-item complete"><span>03</span><b>Analysis workflow</b><small>Input checks, event construction, logistic models and metrics</small><em>IMPLEMENTED</em></div>
+          <div className="status-item complete"><span>04</span><b>Ecological summaries</b><small>Fractional cell–ecoregion weighting and sample safeguards</small><em>IMPLEMENTED</em></div>
+          <div className="status-item complete"><span>05</span><b>Reproducibility controls</b><small>Chronological splits, source hashes and one-time test protection</small><em>IMPLEMENTED</em></div>
+          <div className="status-item complete"><span>06</span><b>Interactive observatory</b><small>Offline React explainer with no fabricated result visualisations</small><em>IMPLEMENTED</em></div>
+        </div>
+        <div className="lock-message"><span>◈</span><p><strong>Measurements are never simulated.</strong> This repository presents the complete software and research framework. Any empirical result must come from source-verified environmental data, documented quality control and a genuine author prior before the locked test is opened.</p></div>
       </section>
 
       <section className="section sources-section" id="sources">
         <div className="section-kicker">DATA SOURCES <span>08 — 08</span></div>
-        <div className="section-heading"><h2>Trace every signal<br /><em>back to its source.</em></h2><p>Official product versions and documentation are recorded in the repository source register. Retrieval dates and actual extraction manifests remain to be completed.</p></div>
+        <div className="section-heading"><h2>Trace every signal<br /><em>back to its source.</em></h2><p>Official product guides, collection documentation, QA definitions and attribution are linked in the repository source register.</p></div>
         <div className="source-list">{sources.map((source, index) => <a className="source-item" href={source[2]} target="_blank" rel="noreferrer" key={source[0]}><span>{String(index + 1).padStart(2, "0")}</span><div><b>{source[0]}</b><small>{source[1]}</small></div><i>↗</i></a>)}</div>
       </section>
 
-      <section className="closing"><p className="eyebrow">A NOTE ON SCIENTIFIC INTERPRETATION</p><h2>Probability is not certainty.<br /><em>And a proxy is not the system.</em></h2><p>This framework is a starting point for transparent, testable environmental analysis. Any future finding must be tied to verified source data, documented quality control, a frozen model specification and uncertainty that is reported rather than hidden.</p><a href="RESEARCH_PROTOCOL.md">Open the full research protocol ↗</a></section>
+      <section className="closing"><p className="eyebrow">A NOTE ON SCIENTIFIC INTERPRETATION</p><h2>Probability is not certainty.<br /><em>And a proxy is not the system.</em></h2><p>This framework is a starting point for transparent, testable environmental analysis. Any future finding must be tied to verified source data, documented quality control, a frozen model specification and uncertainty that is reported rather than hidden.</p><a href="https://github.com/krlhsn/global-compound-ecosystem-disturbance-observatory/blob/main/RESEARCH_PROTOCOL.md" target="_blank" rel="noreferrer">Open the full research protocol ↗</a></section>
       <footer><span>WHEN ECOSYSTEM DISTURBANCES COMPOUND</span><span>Built by <a href="https://github.com/krlhsn">Kamrul Hassan</a> · <a href="https://orcid.org/0009-0008-2990-1036">ORCID</a></span></footer>
     </main>
   );

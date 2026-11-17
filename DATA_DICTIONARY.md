@@ -54,13 +54,15 @@ Use Earth Engine collection ECMWF/ERA5_LAND/MONTHLY_AGGR or the corresponding Co
 
 ### MOD13C2.061 NDVI
 
+Retrieve the primary MOD13C2.061 monthly CMG product through NASA LP DAAC / USGS Earthdata. The current reviewed Earth Engine MODIS catalogue did not confirm a MOD13C2.061 collection ID; do not assume MODIS/061/MOD13C2 exists in Earth Engine. Keep the source granule IDs and checksums in the extraction manifest.
+
 - Apply NDVI scale factor 0.0001 and handle fill values before aggregation.
 - Require the product-specific pixel reliability rank (SummaryQA / pixel reliability) = 0 (Good Data).
 - DetailedQA rules: bits 0–1 = 00 (good VI quality); bits 2–5 ≤ 0001 (highest or lower usefulness rank); bits 11–13 = 001 (land); bits 14–15 ≥ 10 (more than 50% of the finer 1-km resolution contributed to the CMG pixel).
 - Important: for MOD13C2, bits 14–15 are geospatial contribution quality, not snow/ice and shadow flags. The product also has a separate pixel-reliability rank.
 - Calculate good fraction from contributing terrestrial CMG pixel area, not the count of pixels alone.
 - Require ndvi_good_fraction ≥0.80 for the primary V indicator.
-- Verify V061 band names and bit decoding against the product guide; record exact code in the manifest.
+- Verify V061 SDS names and bit decoding against the product guide; record exact decoder code and granule-level provenance in the manifest.
 
 ### MCD64A1.061 burned area
 

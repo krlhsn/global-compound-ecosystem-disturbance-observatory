@@ -29,7 +29,9 @@ This is the planned source register. Record actual retrieval dates, immutable as
 - Collection guide: https://lpdaac.usgs.gov/documents/621/MOD13_User_Guide_V61.pdf
 - Scale: NDVI scale factor 0.0001. Confirm valid range and fill values from the V061 guide.
 - QA: apply the pixel reliability rank = 0 (Good Data), plus DetailedQA bits 0–1 = 00, bits 2–5 ≤ 0001, bits 11–13 = 001 (land), and bits 14–15 ≥ 10 (more than 50% of the finer 1-km resolution contributed). For MOD13C2, bits 14–15 are geospatial contribution quality, not snow/ice or shadow flags.
-- The monthly MOD13C2 guide lists NDVI fill value -3000, valid range -2000 to 10000 and scale factor 0.0001. The exact Earth Engine band names and decoded QA implementation must be recorded in the extraction manifest.
+- The monthly MOD13C2 guide lists NDVI fill value -3000, valid range -2000 to 10000 and scale factor 0.0001. Record the V061 SDS names, decoded QA implementation, LP DAAC granule IDs and checksums in the extraction manifest.
+- The current Earth Engine MODIS catalogue review confirmed MOD13C1.061 and MOD13A3.061 entries but did not verify a MOD13C2.061 Earth Engine collection. The primary protocol therefore uses the original MOD13C2.061 product from LP DAAC/Earthdata directly; do not use an unverified Earth Engine asset ID.
+- Earth Engine catalog index: https://developers.google.com/earth-engine/datasets/catalog/modis
 - Attribution: retain NASA LP DAAC / MODIS product acknowledgement and citation in derivative work.
 
 ## 4. MODIS/Terra+Aqua MCD64A1.061
@@ -50,8 +52,9 @@ The source rasters have not yet been exported into this repository. Complete thi
 - Earth Engine project/account:
 - Retrieval date for each source:
 - Exact collection/product IDs and temporal filter:
+- MOD13C2 LP DAAC granule identifiers and checksums:
 - MOD13C2 QA decoding implementation and code hash:
-- MCD64A1 QA decoding implementation and code hash:
+- MCD64A1 Earth Engine asset identifiers and QA decoding implementation hash:
 - Grid asset ID and geometry hash:
 - Cell–ecoregion crosswalk ID/hash:
 - ERA5-Land unit conversion and aggregation code hash:

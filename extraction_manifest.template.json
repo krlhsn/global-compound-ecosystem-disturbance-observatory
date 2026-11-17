@@ -20,10 +20,13 @@
       "processing_code_sha256": ""
     },
     "MOD13C2.061": {
-      "collection_id": "MODIS/061/MOD13C2",
+      "provider": "NASA LP DAAC / USGS Earthdata Search",
+      "product_id": "MOD13C2.061",
+      "retrieval_method": "Direct product download; not an assumed Earth Engine collection",
       "retrieval_start": "2001-01-01",
       "retrieval_end": "2024-12-01",
-      "asset_ids": [],
+      "granule_ids": [],
+      "download_request_ids": [],
       "qa_decoder_version": "SummaryQA rank 0; DetailedQA bits 0-1=00, 2-5<=1, 11-13=001, 14-15>=2",
       "qa_decoder_code_sha256": ""
     },

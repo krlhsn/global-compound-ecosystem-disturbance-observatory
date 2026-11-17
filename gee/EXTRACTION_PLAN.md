@@ -1,6 +1,6 @@
-# Google Earth Engine Extraction Plan
+# Source Extraction and Google Earth Engine Processing Plan
 
-This document describes the upstream data-preparation work required before running the Python pilot. It is an extraction plan rather than a claim that global exports have already been produced.
+This document defines a hybrid source-preparation workflow. ERA5-Land, MCD64A1.061 and RESOLVE 2017 are available through the Google Earth Engine catalogue. The primary MOD13C2.061 monthly CMG product is specified as a NASA LP DAAC/Earthdata source; the current Earth Engine MODIS catalogue review did not verify a MOD13C2.061 collection ID. Do not assume that a guessed collection ID exists. This is a processing plan, not a claim that global exports have been produced.
 
 ## Why partition the export?
 
@@ -11,7 +11,7 @@ The target grid is global at 0.5°. A multi-decade monthly table can contain ten
 | Source | Earth Engine collection | Required content |
 |---|---|---|
 | ERA5-Land | ECMWF/ERA5_LAND/MONTHLY_AGGR | swvl1–3, temperature_2m, total_precipitation_sum |
-| MODIS NDVI | MODIS/061/MOD13C2 | NDVI, DetailedQA |
+| MODIS NDVI (primary specification) | NASA LP DAAC / USGS Earthdata Search; product MOD13C2.061 | NDVI, VI Quality, pixel reliability, pixel-count and QA SDSs |
 | MODIS burned area | MODIS/061/MCD64A1 | BurnDate, QA |
 | Ecoregions | RESOLVE/ECOREGIONS/2017 | ECO_ID, ECO_NAME, BIOME_NAME, REALM |
 
@@ -40,12 +40,16 @@ Do not assign an entire mixed cell to one ecoregion in regional summaries.
 
 ## MOD13C2 NDVI quality
 
-- Confirm NDVI, DetailedQA and the pixel reliability rank band names in the V061 product guide and the current Earth Engine collection.
+- Retrieve the MOD13C2.061 monthly 0.05° CMG granules from NASA LP DAAC / USGS Earthdata using a recorded Earthdata download session and immutable granule identifiers.
+- Do not use the unverified Earth Engine ID MODIS/061/MOD13C2. The current reviewed Earth Engine MODIS catalog lists MOD13C1.061 and MOD13A3.061, but no MOD13C2.061 entry was confirmed.
+- Confirm NDVI, DetailedQA and pixel-reliability SDS names and metadata against the V061 product guide.
 - Apply scale factor 0.0001 after excluding fill value -3000.
 - Require pixel reliability rank = 0 (Good Data).
 - DetailedQA: bits 0–1 = 00, bits 2–5 ≤ 0001, bits 11–13 = 001 (land), bits 14–15 ≥ 10 (more than 50% fine-resolution contribution).
 - Do not interpret MOD13C2 bits 14–15 as snow/shadow; they encode geospatial contribution quality.
 - Calculate the share of terrestrial contributing CMG pixel area passing QA.
+- Convert the retrieved CMG granules to a geospatial raster with correct latitude/longitude grid registration; preserve the original HDF granule IDs and checksums.
+- Aggregate the 0.05° CMG cells to the 0.5° study grid with terrestrial-area weighting.
 - Export NDVI and its good-area fraction; retain QA counts/fractions for sensitivity checks.
 - Do not interpret a missing/low-quality observation as zero vegetation greenness.
 
@@ -78,7 +82,7 @@ Before the Python pilot:
 - check grid geometry, coordinates, units and area denominators;
 - compare random locations with source imagery and product QA layers;
 - inspect missingness by product, month, latitude and biome;
-- record asset IDs, collection versions, export tasks and code commit;
+- record Earth Engine asset IDs for Earth Engine inputs, LP DAAC granule IDs for MOD13C2, download request IDs, collection/product versions, export tasks and code commit;
 - obtain independent review of QA decoding and spatial aggregation.
 
 Only then should the real data be passed to analysis/feasibility_pilot.py.
