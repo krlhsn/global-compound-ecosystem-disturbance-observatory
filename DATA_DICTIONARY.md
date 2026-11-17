@@ -80,9 +80,9 @@ Retrieve the primary MOD13C2.061 monthly CMG product through NASA LP DAAC / USGS
 |---|---|
 | rootzone_sm | 0.07×swvl1 + 0.21×swvl2 + 0.72×swvl3 |
 | rootzone_sm_3m | Three-month rolling mean ending in the current month |
-| soil_moisture_z | Same-cell/calendar-month z-score against 1981–2000; minimum 15 values |
+| soil_moisture_z | Same-cell/calendar-month z-score against 1981-2000; minimum 15 values |
 | D | 1 if soil_moisture_z ≤−1.0; else 0 when valid |
-| ndvi_z | Same-cell/calendar-month z-score against 2001–2016; minimum 12 values |
+| ndvi_z | Same-cell/calendar-month z-score against 2001-2016; minimum 12 values |
 | V | 1 if ndvi_z ≤−0.5; else 0 when valid |
 | burned_fraction | burned_area_km2 / valid_land_area_km2 |
 | fire_threshold | 90th percentile of positive training-period burned fractions by ecoregion × month; biome × month fallback if fewer than 30 positives |
@@ -93,7 +93,7 @@ Retrieve the primary MOD13C2.061 monthly CMG product through NASA LP DAAC / USGS
 
 ## Forecast features and sample construction
 
-For each cell and origin month t, predictors include only t, t−1 and t−2. Target labels are shifted by exactly one or three calendar rows within each continuous grid-cell series. Samples are included only when their target month lies between May 2001 and December 2024. Split membership follows target year.
+For each cell and origin month t, predictors include only t, t-1 and t-2. Target labels are shifted by exactly one or three calendar rows within each continuous grid-cell series. Samples are included only when their target month lies between May 2001 and December 2024. Split membership follows target year.
 
 ## Validation checks
 
