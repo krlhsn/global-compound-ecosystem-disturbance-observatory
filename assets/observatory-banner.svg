@@ -1,56 +1,39 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
-  <title id="title">Compound ecosystem disturbance observatory artwork</title>
-  <desc id="desc">A dark scientific illustration of a globe, ecological contour lines and three intersecting environmental signal paths.</desc>
+  <title id="title">When Ecosystem Disturbances Compound</title>
+  <desc id="desc">A deep midnight-green scientific banner with a global grid globe, three connected signal paths and three concise indicator labels.</desc>
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#101d32"/><stop offset=".56" stop-color="#17384a"/><stop offset="1" stop-color="#102c34"/></linearGradient>
-    <radialGradient id="halo"><stop offset="0" stop-color="#5ca99a" stop-opacity=".28"/><stop offset="1" stop-color="#5ca99a" stop-opacity="0"/></radialGradient>
-    <linearGradient id="globe" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b8d6b6"/><stop offset=".52" stop-color="#6d9d83"/><stop offset="1" stop-color="#315d55"/></linearGradient>
-    <linearGradient id="signal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d5a071" stop-opacity=".12"/><stop offset=".5" stop-color="#d8c18e" stop-opacity=".95"/><stop offset="1" stop-color="#8fd2c3" stop-opacity=".16"/></linearGradient>
-    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#d8e7e4" stroke-opacity=".045"/></pattern>
-    <clipPath id="globeClip"><circle cx="835" cy="210" r="150"/></clipPath>
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#102238"/><stop offset=".56" stop-color="#173a45"/><stop offset="1" stop-color="#102d32"/></linearGradient>
+    <linearGradient id="signal" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#d6a278" stop-opacity=".15"/><stop offset=".5" stop-color="#e7c99a" stop-opacity=".95"/><stop offset="1" stop-color="#9bd2bf" stop-opacity=".2"/></linearGradient>
+    <radialGradient id="halo"><stop offset="0" stop-color="#72b9a3" stop-opacity=".28"/><stop offset="1" stop-color="#72b9a3" stop-opacity="0"/></radialGradient>
+    <radialGradient id="earth" cx="34%" cy="27%" r="80%"><stop offset="0" stop-color="#d5e2c8"/><stop offset=".42" stop-color="#90b79a"/><stop offset="1" stop-color="#315f58"/></radialGradient>
+    <pattern id="grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#e2eee8" stroke-opacity=".045"/></pattern>
+    <clipPath id="globeClip"><circle cx="930" cy="207" r="145"/></clipPath>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
   </defs>
-  <rect width="1200" height="420" rx="28" fill="url(#bg)"/>
-  <rect width="1200" height="420" rx="28" fill="url(#grid)"/>
-  <circle cx="835" cy="210" r="248" fill="url(#halo)"/>
-  <path d="M0 345 C210 302 342 396 527 351 S890 298 1200 353" fill="none" stroke="#a9c5bb" stroke-opacity=".09" stroke-width="2"/>
-  <path d="M0 76 C230 112 353 40 570 80 S922 111 1200 63" fill="none" stroke="#a9c5bb" stroke-opacity=".07" stroke-width="2"/>
-  <g fill="none" stroke-linecap="round">
-    <ellipse cx="835" cy="210" rx="218" ry="86" transform="rotate(-28 835 210)" stroke="#7cc7bc" stroke-opacity=".35" stroke-width="2"/>
-    <ellipse cx="835" cy="210" rx="234" ry="111" transform="rotate(31 835 210)" stroke="#d4a77e" stroke-opacity=".28" stroke-width="1.6"/>
-    <circle cx="835" cy="210" r="184" stroke="#b7d4cd" stroke-opacity=".2" stroke-width="1.3"/>
-    <circle cx="835" cy="210" r="205" stroke="#8ac8ba" stroke-opacity=".1" stroke-width="1" stroke-dasharray="2 10"/>
-  </g>
+  <rect width="1200" height="420" rx="28" fill="url(#bg)"/><rect width="1200" height="420" rx="28" fill="url(#grid)"/><circle cx="930" cy="207" r="245" fill="url(#halo)"/>
+  <path d="M0 350 C200 306 334 390 520 350 S875 303 1200 355" fill="none" stroke="#b5cfc4" stroke-opacity=".09" stroke-width="2"/>
+  <path d="M0 68 C210 107 352 41 550 78 S906 115 1200 62" fill="none" stroke="#b5cfc4" stroke-opacity=".07" stroke-width="2"/>
+  <g fill="none" stroke-linecap="round"><circle cx="930" cy="207" r="177" stroke="#8bc5b7" stroke-opacity=".22" stroke-width="1.5"/><circle cx="930" cy="207" r="198" stroke="#d2b08d" stroke-opacity=".18" stroke-width="1.2" stroke-dasharray="2 10"/><ellipse cx="930" cy="207" rx="211" ry="78" transform="rotate(-28 930 207)" stroke="#7dcabd" stroke-opacity=".36" stroke-width="1.8"/><ellipse cx="930" cy="207" rx="210" ry="86" transform="rotate(31 930 207)" stroke="#d8aa7e" stroke-opacity=".28" stroke-width="1.6"/></g>
   <g clip-path="url(#globeClip)">
-    <circle cx="835" cy="210" r="150" fill="url(#globe)"/>
-    <g stroke="#163e3b" stroke-opacity=".28" fill="none">
-      <path d="M680 90H990M680 130H990M680 170H990M680 210H990M680 250H990M680 290H990M680 330H990"/>
-      <path d="M715 55V365M755 55V365M795 55V365M835 55V365M875 55V365M915 55V365M955 55V365"/>
-      <ellipse cx="835" cy="210" rx="150" ry="65"/><ellipse cx="835" cy="210" rx="68" ry="150"/>
+    <circle cx="930" cy="207" r="145" fill="url(#earth)"/>
+    <g fill="none" stroke="#173e3c" stroke-opacity=".28" stroke-width="1.2"><path d="M780 94H1080M780 132H1080M780 170H1080M780 207H1080M780 245H1080M780 283H1080M780 320H1080"/><path d="M815 55V360M853 55V360M891 55V360M930 55V360M968 55V360M1006 55V360M1045 55V360"/><ellipse cx="930" cy="207" rx="145" ry="61"/><ellipse cx="930" cy="207" rx="64" ry="145"/></g>
+    <path d="M790 147 L825 111 865 123 881 150 860 177 852 204 817 197 790 177Z" fill="#4d785e" opacity=".94"/><path d="M885 193 L919 179 945 199 942 233 921 273 896 253 878 218Z" fill="#4c765c" opacity=".94"/><path d="M963 120 L1005 108 1048 135 1040 167 1009 183 978 161Z" fill="#4f795f" opacity=".94"/><path d="M975 267 L1010 249 1047 269 1039 302 1007 318 981 296Z" fill="#4a745a" opacity=".88"/>
+    <path d="M782 239 C842 184 875 260 928 207 S1020 167 1078 228" fill="none" stroke="#e2b27f" stroke-width="4.5" opacity=".92"/><path d="M782 254 C842 199 875 275 928 222 S1020 182 1078 243" fill="none" stroke="#f4dfb8" stroke-width="1.3" opacity=".78"/><path d="M788 277 C846 239 885 298 939 261 S1025 231 1080 270" fill="none" stroke="#a2ddc6" stroke-width="3" opacity=".82"/>
+    <g filter="url(#glow)"><circle cx="847" cy="202" r="6" fill="#e7bd8e"/><circle cx="928" cy="207" r="8" fill="#d17b58"/><circle cx="1010" cy="183" r="6" fill="#a4d9bd"/></g>
+  </g>
+  <g fill="none" stroke="url(#signal)" stroke-width="2.2" stroke-linecap="round"><path d="M615 108 C690 53 745 54 790 119 S830 160 849 169"/><path d="M615 314 C690 367 748 350 796 293 S830 249 851 244"/><path d="M1090 85 C1143 134 1147 270 1090 322"/></g>
+  <g filter="url(#glow)"><circle cx="615" cy="108" r="5" fill="#d6a278"/><circle cx="615" cy="314" r="5" fill="#d6a278"/><circle cx="1090" cy="85" r="5" fill="#9bd2bf"/></g>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="76" y="76" fill="#9ed8c9" font-size="15" font-weight="700" letter-spacing="4">GLOBAL ENVIRONMENTAL RESEARCH</text>
+    <text x="72" y="157" fill="#f4f6f0" font-family="Georgia, serif" font-size="55" font-weight="700" letter-spacing="-1.4">When Ecosystem</text>
+    <text x="72" y="219" fill="#f4f6f0" font-family="Georgia, serif" font-size="55" font-weight="700" letter-spacing="-1.4">Disturbances</text>
+    <text x="72" y="281" fill="#e7b88e" font-family="Georgia, serif" font-size="55" font-style="italic" letter-spacing="-1.5">Compound</text>
+    <rect x="78" y="301" width="475" height="4" rx="2" fill="#83c9b8"/>
+    <text x="79" y="333" fill="#c7d9ce" font-size="17" font-weight="600">A probabilistic view of overlapping pressures.</text>
+    <g transform="translate(78 352)">
+      <rect width="126" height="34" rx="17" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".23"/><text x="63" y="22" text-anchor="middle" fill="#edf6ee" font-size="11" font-weight="700" letter-spacing="1">DROUGHT</text>
+      <rect x="139" width="151" height="34" rx="17" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".23"/><text x="214.5" y="22" text-anchor="middle" fill="#edf6ee" font-size="11" font-weight="700" letter-spacing="1">BURNED AREA</text>
+      <rect x="303" width="150" height="34" rx="17" fill="#ffffff" fill-opacity=".09" stroke="#ffffff" stroke-opacity=".23"/><text x="378" y="22" text-anchor="middle" fill="#edf6ee" font-size="11" font-weight="700" letter-spacing="1">VEGETATION</text>
     </g>
-    <path d="M696 143 L737 110 774 126 784 153 759 173 749 201 714 196 690 172Z" fill="#476e58" opacity=".92"/>
-    <path d="M782 200 L822 184 846 207 839 242 819 277 794 258 775 226Z" fill="#456b55" opacity=".94"/>
-    <path d="M869 122 L915 109 957 138 944 172 914 184 883 162Z" fill="#476e58" opacity=".94"/>
-    <path d="M888 270 L930 254 955 275 944 307 909 319 886 296Z" fill="#476e58" opacity=".9"/>
-    <path d="M680 235 C740 184 775 257 828 207 S920 160 990 224" fill="none" stroke="#dfae7c" stroke-width="5" opacity=".9"/>
-    <path d="M680 251 C740 200 775 273 828 223 S920 176 990 240" fill="none" stroke="#f4d9ac" stroke-width="1.5" opacity=".8"/>
-    <path d="M690 276 C755 233 780 297 840 257 S925 232 990 269" fill="none" stroke="#9be0c7" stroke-width="3" opacity=".78"/>
-    <g filter="url(#glow)">
-      <circle cx="748" cy="201" r="6" fill="#e4bd8d"/><circle cx="828" cy="207" r="8" fill="#d47f5d"/><circle cx="912" cy="181" r="6" fill="#a8d9bd"/>
-    </g>
-  </g>
-  <g fill="none" stroke="url(#signal)" stroke-width="2">
-    <path d="M120 110 C250 33 400 48 525 122 S648 192 710 176"/>
-    <path d="M135 310 C274 382 418 361 544 288 S650 222 697 236"/>
-    <path d="M1024 98 C1085 151 1090 263 1020 322"/>
-  </g>
-  <g filter="url(#glow)">
-    <circle cx="120" cy="110" r="5" fill="#d5a071"/><circle cx="135" cy="310" r="5" fill="#d5a071"/><circle cx="1024" cy="98" r="5" fill="#8fd2c3"/>
-  </g>
-  <g transform="translate(1045 179)" fill="none" stroke-width="2">
-    <circle cx="0" cy="0" r="35" stroke="#8acdbd" stroke-opacity=".55"/>
-    <circle cx="0" cy="0" r="20" stroke="#d7a77e" stroke-opacity=".7"/>
-    <path d="M-52 0H52M0 -52V52" stroke="#b5d4c8" stroke-opacity=".5"/>
-    <circle cx="0" cy="0" r="5" fill="#d9b487" stroke="none"/>
   </g>
 </svg>

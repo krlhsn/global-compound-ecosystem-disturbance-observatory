@@ -1,12 +1,5 @@
-# When Ecosystem Disturbances Compound
-
 <p align="center">
   <img src="assets/observatory-banner.svg" alt="Scientific illustration of a globe and three intersecting environmental signal paths" width="100%">
-</p>
-
-<p align="center">
-  <strong>Observe the signals. Model the overlap. Respect the uncertainty.</strong><br>
-  A global research framework for probabilistic analysis of compound ecosystem disturbance.
 </p>
 
 <p align="center">

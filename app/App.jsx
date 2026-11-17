@@ -158,17 +158,17 @@ export default function App() {
       </section>
 
       <section className="section status-section">
-        <div className="section-kicker">RESEARCH SOFTWARE <span>07 — 08</span></div>
-        <div className="section-heading"><h2>A complete framework<br /><em>for a testable question.</em></h2><p>The repository brings the research specification, data contract, analysis code, interface and reproducibility safeguards together as one versioned project.</p></div>
-        <div className="status-grid">
-          <div className="status-item complete"><span>01</span><b>Research specification</b><small>Question, indicators, event definition and forecast horizons</small><em>DOCUMENTED</em></div>
-          <div className="status-item complete"><span>02</span><b>Source and QA contract</b><small>Product versions, quality rules, units and provenance</small><em>DOCUMENTED</em></div>
-          <div className="status-item complete"><span>03</span><b>Analysis workflow</b><small>Input checks, event construction, logistic models and metrics</small><em>IMPLEMENTED</em></div>
-          <div className="status-item complete"><span>04</span><b>Ecological summaries</b><small>Fractional cell–ecoregion weighting and sample safeguards</small><em>IMPLEMENTED</em></div>
-          <div className="status-item complete"><span>05</span><b>Reproducibility controls</b><small>Chronological splits, source hashes and one-time test protection</small><em>IMPLEMENTED</em></div>
-          <div className="status-item complete"><span>06</span><b>Interactive observatory</b><small>Offline React explainer with no fabricated result visualisations</small><em>IMPLEMENTED</em></div>
+        <div className="section-kicker">THE OBSERVATORY SYSTEM <span>07 — 08</span></div>
+        <div className="section-heading"><h2>One coherent framework.<br /><em>From signal to probability.</em></h2><p>The project unites the scientific specification, source-quality contract, computational workflow and reproducible interface in one versioned research system.</p></div>
+        <div className="capability-list">
+          <div><b>01 · Research specification</b><span>Research question, environmental indicators, compound-event definition and exact forecast horizons.</span></div>
+          <div><b>02 · Source and quality contract</b><span>Dataset versions, product-specific QA, units, spatial crosswalks and provenance requirements.</span></div>
+          <div><b>03 · Probabilistic analysis</b><span>Input validation, indicator construction, event labels, regularised logistic models and calibration metrics.</span></div>
+          <div><b>04 · Ecological comparison</b><span>Fractional cell–ecoregion weighting, regional sample safeguards and uncertainty summaries.</span></div>
+          <div><b>05 · Reproducibility design</b><span>Chronological splits, source hashes, analysis freeze and one-time held-out evaluation controls.</span></div>
+          <div><b>06 · Interactive observatory</b><span>Offline React explainer for signals, event categories, forecast horizons and model specifications.</span></div>
         </div>
-        <div className="lock-message"><span>◈</span><p><strong>Measurements are never simulated.</strong> This repository presents the complete software and research framework. Any empirical result must come from source-verified environmental data, documented quality control and a genuine author prior before the locked test is opened.</p></div>
+        <div className="lock-message"><span>◈</span><p><strong>Measurements are never simulated.</strong> The research software is implemented as a complete framework. Empirical conclusions are only reported when supported by source-verified observations, documented quality control and the preregistered evaluation.</p></div>
       </section>
 
       <section className="section sources-section" id="sources">
