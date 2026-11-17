@@ -100,7 +100,6 @@ Primary evaluation uses mean and total log₁₀ likelihood. Brier score and cal
 | `DATA_DICTIONARY.md` | Input schema, source QA and derived-variable contract |
 | `SOURCES.md` | Official source products, versions, citations and attribution |
 | `PILOT_GATE.md` | Development/validation procedure and locked-test release requirements |
-| `PRIOR_PREDICTION.md` | Author-only prior-prediction record required before test release |
 | `analysis_freeze.template.json` | Hash-based protocol, data and code freeze schema |
 | `extraction_manifest.template.json` | Source retrieval, QA review and export-provenance schema |
 | `AI-NOTES.md` | AI-use disclosure and author decision record |
@@ -151,7 +150,7 @@ Product-specific QA, data access, attribution and known limitations are recorded
 
 This is a retrospective research framework, not an operational early-warning service, ecological diagnosis, fire-detection system or conservation decision tool. NDVI is a greenness proxy; burned area is not synonymous with wildfire; soil moisture is one drought-related signal. Spatial aggregation, source QA, temporal coverage, ecological heterogeneity, missingness and confounding can all affect conclusions.
 
-A predicted probability is conditional on the data and model specification. It is not a causal explanation and does not establish that a disturbance will occur. The 2021–2024 test is protected from design decisions until the author's prior and analysis freeze are recorded.
+A predicted probability is conditional on the data and model specification. It is not a causal explanation and does not establish that a disturbance will occur. The 2021–2024 test is protected from design decisions until an author-authored prior and analysis freeze are recorded. The personal prior is supplied privately at analysis time and is not stored in the public repository.
 
 ## Author
 

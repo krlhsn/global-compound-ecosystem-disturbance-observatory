@@ -25,6 +25,8 @@ outputs/
 .locked_test_opened.txt
 LOCKED_TEST_OPENED.txt
 analysis_freeze.json
+extraction_manifest.json
+author_prior_prediction.md
 
 # Node / Vite
 node_modules/

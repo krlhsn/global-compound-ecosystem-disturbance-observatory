@@ -596,7 +596,7 @@ def main() -> int:
     parser.add_argument("--run-sensitivity", action="store_true",
                         help="Run the predefined threshold sensitivity grid on training/validation only.")
     parser.add_argument("--open-locked-test", action="store_true")
-    parser.add_argument("--prior", default="PRIOR_PREDICTION.md")
+    parser.add_argument("--prior", default="author_prior_prediction.md", help="Private author-authored prior; this file is intentionally excluded from Git.")
     parser.add_argument("--freeze", default="analysis_freeze.json")
     parser.add_argument("--manifest", default="extraction_manifest.json",
                         help="Completed extraction manifest required for the locked test.")
