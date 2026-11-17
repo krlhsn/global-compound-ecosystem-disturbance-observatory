@@ -30,7 +30,7 @@ The project compares five regularised logistic-regression models. They range fro
 
 For each origin month, the predictors can use information from that month and the two months before it. The targets are the outcome in the exact month one month later and the exact month three months later. These are separate forecasting questions; an event occurring at any time during a three-month window is not treated as the same thing as an event in the exact third month.
 
-The time split is also important. Target years 2001–2016 are assigned to training, 2017–2020 to validation, and 2021–2024 to a locked test period. The test is protected from decisions made during model development. Before it can be opened, the project requires a genuine prior prediction written by me, verified source exports and quality checks, and a recorded analysis freeze.
+The time split is also important. Target years 2001-2016 are assigned to training, 2017-2020 to validation, and 2021-2024 to a locked test period. The test is protected from decisions made during model development. Before it can be opened, the project requires a genuine prior prediction written by me, verified source exports and quality checks, and a recorded analysis freeze.
 
 ## The part that matters most: what the project does not claim
 
