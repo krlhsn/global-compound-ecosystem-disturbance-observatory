@@ -22,8 +22,8 @@ AI assistance does not replace source verification, reproducible analysis or dom
 
 ## Quality-control revision (2026-11-18)
 
-During a product-guide audit, the MOD13C2.061 QA definition was corrected: DetailedQA bits 14–15 encode geospatial contribution quality for this CMG product, while a separate pixel-reliability rank identifies Good Data. The protocol, data dictionary, source register, extraction plan, interface and software were updated to use the product-specific interpretation.
+During a product-guide audit, the MOD13C2.061 QA definition was corrected: DetailedQA bits 14-15 encode geospatial contribution quality for this CMG product, while a separate pixel-reliability rank identifies Good Data. The protocol, data dictionary, source register, extraction plan, interface and software were updated to use the product-specific interpretation.
 
-The MCD64A1 unburned-area denominator was also tightened to exclude BurnDate = 0 pixels carrying a non-zero special-condition code in QA bits 5–7. A separate area-fraction field records these excluded cases. The analysis gained a threshold-sensitivity grid and stricter, hash-verified locked-test release checks.
+The MCD64A1 unburned-area denominator was also tightened to exclude BurnDate = 0 pixels carrying a non-zero special-condition code in QA bits 5-7. A separate area-fraction field records these excluded cases. The analysis gained a threshold-sensitivity grid and stricter, hash-verified locked-test release checks.
 
 The author remains responsible for verifying the exported QA decoder against actual GEE assets and obtaining independent QA review. No empirical result was generated during this code revision.
