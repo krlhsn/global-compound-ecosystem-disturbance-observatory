@@ -79,6 +79,16 @@ def validate_monthly_input(frame: pd.DataFrame) -> pd.DataFrame:
         expected = pd.date_range(dates.iloc[0], dates.iloc[-1], freq="MS")
         if len(expected) != len(dates) or not np.array_equal(expected.values, dates.values):
             raise ValueError(f"Missing monthly row(s) for grid_id={grid_id}; retain rows and encode unavailable observations as NA.")
+        for column in ["latitude", "longitude", "land_area_km2", "ecoregion_id", "biome_name", "realm"]:
+            if group[column].dropna().nunique() > 1:
+                raise ValueError(f"{column} changes within grid_id={grid_id}; grid and ecological identifiers must be stable.")
+    for column in ["swvl1", "swvl2", "swvl3"]:
+        values = data[column].dropna()
+        if ((values < 0) | (values > 1)).any():
+            raise ValueError(f"{column} must be a volumetric fraction between 0 and 1.")
+    ndvi_values = data["ndvi"].dropna()
+    if ((ndvi_values < -1) | (ndvi_values > 1)).any():
+        raise ValueError("Scaled NDVI must be between -1 and 1.")
     return data.sort_values(["grid_id", "date"]).reset_index(drop=True)
 
 def validate_crosswalk(crosswalk: pd.DataFrame, grid_ids: Iterable[str] | None = None) -> pd.DataFrame:
