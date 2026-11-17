@@ -49,11 +49,12 @@ This is a root-zone soil-moisture proxy, not a universal measure of meteorologic
 3. Burned area is the area of valid full-month pixels with BurnDate > 0.
 4. For unburned pixels (BurnDate = 0), require the MCD64A1 QA special-condition code in bits 5–7 to equal 0. Codes 1–5 flag special circumstances behind an unburned classification; those pixels are unevaluable and are excluded from the unburned denominator.
 5. Exclude water, invalid/unmapped pixels, shortened-period pixels and special-condition unburned pixels from the corresponding numerator/denominator. Never convert these pixels to unburned.
-6. Define valid_land_area_km2 as the area of full-month valid land pixels that are burned (BurnDate > 0) or reliably unburned (BurnDate = 0 and bits 5–7 = 0). Exclude special-condition unburned pixels and record their area fraction separately.
-7. Require valid full-month mapped terrestrial area to cover at least 80% of the cell's terrestrial land area. A nonzero shortened-area fraction does not automatically invalidate the whole coarse cell if the remaining valid coverage passes this rule.
-8. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001–2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
-9. Set F=1 when a valid positive fraction is at or above its applicable threshold; set F=0 for valid observations below threshold, including reliable zero-burn months.
-10. Treat June 2001 as unavailable for F because the MCD64A1 record for that month is documented as heavily degraded by a Terra MODIS outage.
+6. Define valid_land_area_km2 as the area of full-month valid land pixels that are burned (BurnDate > 0) or reliably unburned (BurnDate = 0 and bits 5–7 = 0). Exclude special-condition unburned pixels and record their area fraction separately as fire_unburned_special_fraction, expressed as a fraction of cell terrestrial land area.
+7. The valid-land, special-condition-unburned and shortened-period land-area fractions are mutually exclusive components and must sum to no more than 1.00 (allowing a 0.001 numerical tolerance).
+8. Require valid full-month mapped terrestrial area to cover at least 80% of the cell's terrestrial land area. A nonzero shortened-area fraction does not automatically invalidate the whole coarse cell if the remaining valid coverage passes this rule.
+9. For each ecoregion × calendar month, calculate the 90th percentile of positive burned-area fractions in 2001–2016. Require at least 30 positive cell-month observations. If sparse, use the matching biome × calendar-month threshold if that group also has at least 30 positive observations. Otherwise F is unevaluable.
+10. Set F=1 when a valid positive fraction is at or above its applicable threshold; set F=0 for valid observations below threshold, including reliable zero-burn months.
+11. Treat June 2001 as unavailable for F because the MCD64A1 record for that month is documented as heavily degraded by a Terra MODIS outage.
 
 This definition detects locally unusual burned-area activity. It does not determine fire cause and does not equate every mapped burn with wildfire. Small burns may be omitted and cropland burning has lower confidence.
 

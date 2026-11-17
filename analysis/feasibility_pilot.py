@@ -34,7 +34,7 @@ REQUIRED = {
     "ecoregion_id", "ecoregion_name", "biome_name", "realm",
     "ecoregion_fraction", "swvl1", "swvl2", "swvl3", "t2m_c",
     "precip_mm", "ndvi", "ndvi_good_fraction", "burned_area_km2",
-    "valid_land_area_km2", "fire_shortened_fraction",
+    "valid_land_area_km2", "fire_shortened_fraction", "fire_unburned_special_fraction",
 }
 BASE_CATEGORICAL = ["biome_name", "target_month"]
 MODEL_INPUTS = {
@@ -66,12 +66,22 @@ def validate_monthly_input(frame: pd.DataFrame) -> pd.DataFrame:
     for col in ["land_area_km2", "valid_land_area_km2", "burned_area_km2"]:
         if (data[col].dropna() < 0).any():
             raise ValueError(f"{col} contains negative values.")
-    for col in ["ndvi_good_fraction", "fire_shortened_fraction", "ecoregion_fraction"]:
+    for col in ["ndvi_good_fraction", "fire_shortened_fraction", "fire_unburned_special_fraction", "ecoregion_fraction"]:
         values = data[col].dropna()
         if ((values < 0) | (values > 1)).any():
             raise ValueError(f"{col} must be between 0 and 1.")
     if (data["valid_land_area_km2"] - data["land_area_km2"] > 1e-4).any():
         raise ValueError("valid_land_area_km2 cannot exceed land_area_km2.")
+    valid_coverage = data["valid_land_area_km2"] / data["land_area_km2"].replace(0, np.nan)
+    accounted_coverage = (
+        valid_coverage
+        + data["fire_unburned_special_fraction"]
+        + data["fire_shortened_fraction"]
+    )
+    if (accounted_coverage.dropna() > 1.001).any():
+        raise ValueError(
+            "Valid mapped, special-condition unburned and shortened-period land fractions cannot exceed 1."
+        )
     if (data["burned_area_km2"] - data["valid_land_area_km2"] > 0.05).any():
         raise ValueError("Burned area exceeds valid mapped land area.")
     for grid_id, group in data.groupby("grid_id", sort=False):
@@ -140,7 +150,18 @@ def compound_labels(drought: pd.Series, fire: pd.Series, vegetation: pd.Series) 
         labels.loc[eligible & condition] = code
     return y, labels
 
-def build_indicators(frame: pd.DataFrame) -> pd.DataFrame:
+def build_indicators(frame: pd.DataFrame, drought_threshold: float = -1.0,
+                     fire_quantile: float = 0.90, vegetation_threshold: float = -0.5,
+                     qa_coverage: float = 0.80, minimum_fire_positives: int = 30) -> pd.DataFrame:
+    """Build D/F/V indicators using fixed, documented training-reference rules."""
+    if not -3.0 < drought_threshold < 0.0:
+        raise ValueError("drought_threshold must be a negative standardised anomaly.")
+    if not 0.0 < fire_quantile < 1.0:
+        raise ValueError("fire_quantile must be between 0 and 1.")
+    if not -3.0 < vegetation_threshold < 0.0:
+        raise ValueError("vegetation_threshold must be a negative standardised anomaly.")
+    if not 0.0 < qa_coverage <= 1.0 or minimum_fire_positives < 1:
+        raise ValueError("Invalid QA coverage or minimum positive sample count.")
     data = frame.sort_values(["grid_id", "date"]).reset_index(drop=True).copy()
     data["month"], data["year"] = data["date"].dt.month, data["date"].dt.year
     data["rootzone_sm"] = 0.07*data["swvl1"] + 0.21*data["swvl2"] + 0.72*data["swvl3"]
@@ -150,19 +171,21 @@ def build_indicators(frame: pd.DataFrame) -> pd.DataFrame:
     if soil_reference.empty:
         raise ValueError("Input must include 1981-2000 ERA5-Land data for the fixed soil-moisture reference.")
     data["soil_moisture_z"] = reference_zscore(data, soil_reference, ["grid_id", "month"], "rootzone_sm_3m", 15)
-    data["D"] = np.where(data["soil_moisture_z"].notna(), (data["soil_moisture_z"] <= -1.0).astype(float), np.nan)
+    data["D"] = np.where(data["soil_moisture_z"].notna(), (data["soil_moisture_z"] <= drought_threshold).astype(float), np.nan)
 
     # NDVI is assumed scaled and quality-decoded upstream; its good-area fraction is checked here.
-    ndvi_good = data["ndvi"].notna() & (data["ndvi_good_fraction"] >= 0.80)
+    ndvi_good = data["ndvi"].notna() & (data["ndvi_good_fraction"] >= qa_coverage)
     data.loc[~ndvi_good, "ndvi"] = np.nan
     ndvi_reference = data[data["year"].between(TRAIN_START, TRAIN_END)]
     data["ndvi_z"] = reference_zscore(data, ndvi_reference, ["grid_id", "month"], "ndvi", 12)
-    data["V"] = np.where(data["ndvi_z"].notna(), (data["ndvi_z"] <= -0.5).astype(float), np.nan)
+    data["V"] = np.where(data["ndvi_z"].notna(), (data["ndvi_z"] <= vegetation_threshold).astype(float), np.nan)
 
-    # Burned numerator and denominator must use the identical full-month valid land mask.
+    # valid_land_area_km2 is built upstream from burned pixels plus reliably unburned
+    # pixels (BurnDate=0, special-condition bits 5-7=0). Special unburned pixels
+    # and shortened-period pixels are excluded from this denominator.
     coverage = data["valid_land_area_km2"] / data["land_area_km2"].replace(0, np.nan)
     data["burned_fraction"] = data["burned_area_km2"] / data["valid_land_area_km2"].replace(0, np.nan)
-    data.loc[coverage < 0.80, "burned_fraction"] = np.nan
+    data.loc[coverage < qa_coverage, "burned_fraction"] = np.nan
     fire_reference = data[data["year"].between(TRAIN_START, TRAIN_END)].copy()
     fire_reference = fire_reference[~((fire_reference["year"] == 2001) & (fire_reference["month"] == 6))]
     positive = fire_reference[fire_reference["burned_fraction"] > 0].copy()
@@ -170,13 +193,13 @@ def build_indicators(frame: pd.DataFrame) -> pd.DataFrame:
     eco = positive[positive["ecoregion_id"].notna() &
                    (positive["ecoregion_id"].astype(str).str.upper() != "MIXED")]
     eco_stats = eco.groupby(["ecoregion_id", "month"])["burned_fraction"].agg(
-        eco_threshold=lambda s: s.quantile(0.90), eco_n="count").reset_index()
+        eco_threshold=lambda s: s.quantile(fire_quantile), eco_n="count").reset_index()
     biome_stats = positive.groupby(["biome_name", "month"])["burned_fraction"].agg(
-        biome_threshold=lambda s: s.quantile(0.90), biome_n="count").reset_index()
+        biome_threshold=lambda s: s.quantile(fire_quantile), biome_n="count").reset_index()
     data = data.merge(eco_stats, on=["ecoregion_id", "month"], how="left", validate="many_to_one")
     data = data.merge(biome_stats, on=["biome_name", "month"], how="left", validate="many_to_one")
-    use_eco = data["eco_n"].fillna(0) >= 30
-    use_biome = (~use_eco) & (data["biome_n"].fillna(0) >= 30)
+    use_eco = data["eco_n"].fillna(0) >= minimum_fire_positives
+    use_biome = (~use_eco) & (data["biome_n"].fillna(0) >= minimum_fire_positives)
     data["fire_threshold"] = np.select([use_eco, use_biome],
                                        [data["eco_threshold"], data["biome_threshold"]], default=np.nan)
     data["fire_threshold_level"] = np.select([use_eco, use_biome],
@@ -335,7 +358,9 @@ def score_models(train: pd.DataFrame, evaluate: pd.DataFrame, horizon: int,
 
 def write_development_outputs(frame: pd.DataFrame, output: Path,
                               crosswalk: pd.DataFrame | None = None) -> None:
+    """Write development/validation outputs only; do not summarise locked-test inputs."""
     output.mkdir(parents=True, exist_ok=True)
+    development_frame = frame[frame["date"] <= pd.Timestamp(f"{VALID_END}-12-01")].copy()
     score_tables, regional_tables, counts, validity = [], [], [], []
     for horizon in (1, 3):
         samples = make_forecast_samples(frame, horizon)
@@ -362,14 +387,17 @@ def write_development_outputs(frame: pd.DataFrame, output: Path,
     pd.DataFrame(validity).to_csv(output/"development_validity.csv", index=False)
     if regional_tables:
         pd.concat(regional_tables, ignore_index=True).to_csv(output/"validation_ecoregion_scores.csv", index=False)
-    fallback = frame.groupby(["fire_threshold_level", "month"], dropna=False).size().rename("cell_months").reset_index()
+    fallback = development_frame.groupby(
+        ["fire_threshold_level", "month"], dropna=False
+    ).size().rename("cell_months").reset_index()
     fallback.to_csv(output/"fire_threshold_fallback_counts.csv", index=False)
     lines = [
         "# Development and validation report", "",
-        "Generated from the supplied input table. Verify the extraction manifest before interpretation.",
-        "The locked 2021-2024 test is not included.", "",
-        f"- Input rows: {len(frame):,}", f"- Grid cells: {frame.grid_id.nunique():,}",
-        f"- Input range: {frame.date.min().date()} to {frame.date.max().date()}", "",
+        "Generated from development and validation inputs only. No locked-test outcome or post-validation data summary is included.",
+        "Verify the extraction manifest before interpretation.", "",
+        f"- Pre-test input rows: {len(development_frame):,}",
+        f"- Grid cells: {development_frame.grid_id.nunique():,}",
+        f"- Pre-test input range: {development_frame.date.min().date()} to {development_frame.date.max().date()}", "",
         "## Output files",
         "- development_event_counts.csv: category counts and evaluability by horizon.",
         "- development_validity.csv: forecast sample coverage.",
@@ -385,34 +413,148 @@ def write_development_outputs(frame: pd.DataFrame, output: Path,
     ]
     (output/"pilot_report.md").write_text("\n".join(lines)+"\n", encoding="utf-8")
 
-def open_locked_test(frame: pd.DataFrame, output: Path, prior: Path, freeze: Path,
-                     marker: Path, crosswalk: pd.DataFrame | None) -> None:
-    if not prior.is_file() or not freeze.is_file():
-        raise ValueError("Locked test blocked: supply the student's prior and completed freeze manifest.")
+def run_threshold_sensitivity(monthly: pd.DataFrame, output: Path,
+                              crosswalk: pd.DataFrame | None = None) -> None:
+    """Run the preregistered 2x2x2 indicator-threshold grid on training/validation only."""
+    scenarios = []
+    for drought_cutoff in (-0.75, -1.25):
+        for fire_cutoff in (0.85, 0.95):
+            for vegetation_cutoff in (-0.25, -0.75):
+                label = (
+                    f"D{str(drought_cutoff).replace('-', 'm')}_"
+                    f"F{int(fire_cutoff*100)}_V{str(vegetation_cutoff).replace('-', 'm')}"
+                )
+                scenario = build_indicators(
+                    monthly,
+                    drought_threshold=drought_cutoff,
+                    fire_quantile=fire_cutoff,
+                    vegetation_threshold=vegetation_cutoff,
+                )
+                scenario = add_lags(scenario, [
+                    "soil_moisture_z", "D", "burned_fraction", "F",
+                    "ndvi_z", "V", "t2m_c", "precip_mm",
+                ])
+                folder = output / label
+                write_development_outputs(scenario, folder, crosswalk)
+                scores = pd.read_csv(folder / "validation_model_scores.csv")
+                scores.insert(0, "scenario", label)
+                scores["drought_cutoff"] = drought_cutoff
+                scores["fire_quantile"] = fire_cutoff
+                scores["vegetation_cutoff"] = vegetation_cutoff
+                scenarios.append(scores)
+    output.mkdir(parents=True, exist_ok=True)
+    pd.concat(scenarios, ignore_index=True).to_csv(
+        output / "threshold_sensitivity_validation.csv", index=False
+    )
+
+
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def open_locked_test(monthly: pd.DataFrame, output: Path, prior: Path, freeze: Path,
+                     marker: Path, crosswalk: pd.DataFrame | None, input_path: Path,
+                     crosswalk_path: Path | None, extraction_manifest_path: Path) -> None:
+    """Release the held-out test once, only after provenance, QA and author-freeze checks."""
+    if crosswalk is None or crosswalk_path is None or not crosswalk_path.is_file():
+        raise ValueError("Locked test blocked: a validated cell-ecoregion crosswalk file is required.")
+    if not prior.is_file() or not freeze.is_file() or not extraction_manifest_path.is_file():
+        raise ValueError("Locked test blocked: prior, extraction manifest and analysis freeze are required.")
     prior_text = prior.read_text(encoding="utf-8").strip()
     placeholders = ["[write", "[your", "not yet completed", "intentionally left unfilled", "complete before opening"]
     if len(prior_text) < 120 or any(item in prior_text.lower() for item in placeholders):
-        raise ValueError("Locked test blocked: prior prediction appears incomplete or template-only.")
+        raise ValueError("Locked test blocked: the author's prior prediction is incomplete or template-only.")
+
+    extraction = json.loads(extraction_manifest_path.read_text(encoding="utf-8"))
+    if extraction.get("status") != "complete":
+        raise ValueError("Locked test blocked: extraction manifest status must be complete.")
+    qa_review = extraction.get("qa_review", {})
+    qa_checks = qa_review.get("checks", {})
+    required_checks = {
+        "temporal_coverage", "missingness_and_qa", "units_and_ranges",
+        "burned_area_denominator", "mod13c2_quality_decoder",
+        "cell_ecoregion_area_reconciliation", "independent_spot_checks",
+    }
+    if qa_review.get("status") != "passed" or not required_checks.issubset(qa_checks):
+        raise ValueError("Locked test blocked: independent QA review and all required QA check fields are required.")
+    if not all(qa_checks.get(key) is True for key in required_checks):
+        raise ValueError("Locked test blocked: every independent QA check must be marked passed.")
+    if not str(qa_review.get("reviewer", "")).strip() or not str(qa_review.get("reviewed_at_utc", "")).strip():
+        raise ValueError("Locked test blocked: independent reviewer and review timestamp are required.")
+    if not str(qa_review.get("review_notes", "")).strip():
+        raise ValueError("Locked test blocked: independent QA review notes are required.")
+    if extraction.get("attribution_and_license_reviewed") is not True:
+        raise ValueError("Locked test blocked: dataset attribution and licence review must be recorded.")
+
+    source_register = extraction.get("sources", {})
+    required_sources = {
+        "ERA5-Land", "MOD13C2.061", "MCD64A1.061", "RESOLVE_Ecoregions_2017"
+    }
+    if not required_sources.issubset(source_register):
+        raise ValueError("Locked test blocked: all four source products must be represented in the extraction manifest.")
+    if not source_register["ERA5-Land"].get("asset_ids"):
+        raise ValueError("Locked test blocked: ERA5-Land asset identifiers are missing.")
+    if not source_register["MOD13C2.061"].get("granule_ids"):
+        raise ValueError("Locked test blocked: NASA LP DAAC MOD13C2 granule identifiers are missing.")
+    if not source_register["MCD64A1.061"].get("asset_ids"):
+        raise ValueError("Locked test blocked: MCD64A1 asset identifiers are missing.")
+    if not source_register["RESOLVE_Ecoregions_2017"].get("asset_ids"):
+        raise ValueError("Locked test blocked: RESOLVE asset identifiers are missing.")
+    if not extraction.get("grid", {}).get("geometry_sha256"):
+        raise ValueError("Locked test blocked: the grid geometry hash is missing.")
+
+    source_files = extraction.get("files", {})
+    if source_files.get("cell_monthly_sha256") != _sha256(input_path):
+        raise ValueError("Extraction manifest cell_monthly checksum does not match the supplied input.")
+    if source_files.get("cell_ecoregion_weights_sha256") != _sha256(crosswalk_path):
+        raise ValueError("Extraction manifest crosswalk checksum does not match the supplied crosswalk.")
+
+    hashes = {
+        "analysis_code_sha256": _sha256(Path(__file__)),
+        "protocol_sha256": _sha256(Path("RESEARCH_PROTOCOL.md")),
+        "monthly_input_sha256": _sha256(input_path),
+        "crosswalk_input_sha256": _sha256(crosswalk_path),
+        "extraction_manifest_sha256": _sha256(extraction_manifest_path),
+        "prior_prediction_sha256": _sha256(prior),
+    }
     manifest = json.loads(freeze.read_text(encoding="utf-8"))
-    digest = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    required = {"protocol_version", "analysis_code_sha256", "thresholds_frozen", "predictors_frozen",
-                "validation_reviewed", "student_prior_completed", "freeze_date", "student_notes"}
-    missing = required - set(manifest)
+    required_freeze = {
+        "protocol_version", *hashes.keys(), "thresholds_frozen", "predictors_frozen",
+        "validation_reviewed", "student_prior_completed", "freeze_date", "student_notes",
+    }
+    missing = required_freeze - set(manifest)
     if missing or manifest.get("protocol_version") != PROTOCOL_VERSION:
         raise ValueError(f"Freeze manifest incomplete or version mismatch: {sorted(missing)}.")
-    if manifest.get("analysis_code_sha256") != digest:
-        raise ValueError("Freeze manifest hash does not match this exact analysis script.")
+    for field, digest in hashes.items():
+        if manifest.get(field) != digest:
+            raise ValueError(f"Freeze manifest {field} does not match the current source file.")
     confirmations = ["thresholds_frozen", "predictors_frozen", "validation_reviewed", "student_prior_completed"]
     if not all(manifest.get(key) is True for key in confirmations):
-        raise ValueError("All freeze confirmations must be true.")
+        raise ValueError("All author freeze confirmations must be true.")
     if not str(manifest.get("freeze_date", "")).strip() or not str(manifest.get("student_notes", "")).strip():
-        raise ValueError("Freeze date and student notes must be completed.")
-    if marker.exists() or (output/"LOCKED_TEST_OPENED.txt").exists():
-        raise FileExistsError("Locked test already opened; refusing a repeat run.")
+        raise ValueError("Freeze date and author notes must be completed.")
+    if marker.exists() or (output / "LOCKED_TEST_OPENED.txt").exists():
+        raise FileExistsError("Locked test already opened or previously started; refusing a repeat run.")
 
+    # Set a persistent marker BEFORE any held-out labels are evaluated. If a run is
+    # interrupted after release, do not silently allow another look at the test.
+    marker.parent.mkdir(parents=True, exist_ok=True)
+    marker.write_text("LOCKED TEST RELEASE STARTED; do not delete or rerun.\n", encoding="utf-8")
+    output.mkdir(parents=True, exist_ok=True)
+    (output / "LOCKED_TEST_OPENED.txt").write_text(
+        "Locked test release started once. Preserve outputs and hashes.\n", encoding="utf-8"
+    )
+
+    # Only now, after all release conditions pass and the one-time marker exists,
+    # derive labels and predictors for the full period including the locked test.
+    indicators = build_indicators(monthly)
+    indicators = add_lags(indicators, [
+        "soil_moisture_z", "D", "burned_fraction", "F",
+        "ndvi_z", "V", "t2m_c", "precip_mm",
+    ])
     scores, regional = [], []
     for horizon in (1, 3):
-        samples = make_forecast_samples(frame, horizon)
+        samples = make_forecast_samples(indicators, horizon)
         development = samples[samples.target_year.between(TRAIN_START, VALID_END)]
         test = samples[samples.target_year.between(TEST_START, TEST_END)]
         for name, base_features in MODEL_INPUTS.items():
@@ -438,23 +580,26 @@ def open_locked_test(frame: pd.DataFrame, output: Path, prior: Path, freeze: Pat
             })
             if crosswalk is not None:
                 regional.extend(regional_scores(evaluate, y, p, crosswalk, name, horizon))
-    output.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(scores).to_csv(output/"LOCKED_TEST_scores.csv", index=False)
     if regional:
         pd.DataFrame(regional).to_csv(output/"LOCKED_TEST_ecoregion_scores.csv", index=False)
-    note = "Locked test opened once. Preserve outputs, hashes, code version and deviations.\n"
+    note = "Locked test evaluated once. Preserve outputs, hashes, code version and deviations.\n"
     (output/"LOCKED_TEST_OPENED.txt").write_text(note, encoding="utf-8")
-    marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text(note, encoding="utf-8")
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", required=True, help="Prepared real cell_monthly.csv")
-    parser.add_argument("--crosswalk", help="Optional cell_ecoregion_weights.csv")
+    parser.add_argument("--crosswalk", help="cell_ecoregion_weights.csv")
     parser.add_argument("--output", default="pilot_outputs")
+    parser.add_argument("--run-sensitivity", action="store_true",
+                        help="Run the predefined threshold sensitivity grid on training/validation only.")
     parser.add_argument("--open-locked-test", action="store_true")
     parser.add_argument("--prior", default="PRIOR_PREDICTION.md")
     parser.add_argument("--freeze", default="analysis_freeze.json")
+    parser.add_argument("--manifest", default="extraction_manifest.json",
+                        help="Completed extraction manifest required for the locked test.")
     parser.add_argument("--test-lock-marker", default=".locked_test_opened.txt")
     args = parser.parse_args()
     source = Path(args.input)
@@ -462,23 +607,36 @@ def main() -> int:
         raise FileNotFoundError(source)
     monthly = validate_monthly_input(pd.read_csv(source, low_memory=False))
     crosswalk = None
-    if args.crosswalk:
-        crosswalk = validate_crosswalk(pd.read_csv(args.crosswalk, low_memory=False), monthly.grid_id.unique())
+    crosswalk_source = Path(args.crosswalk) if args.crosswalk else None
+    if crosswalk_source is not None:
+        crosswalk = validate_crosswalk(
+            pd.read_csv(crosswalk_source, low_memory=False), monthly.grid_id.unique()
+        )
         areas = crosswalk.groupby("grid_id").intersection_land_area_km2.sum()
         cells = monthly.drop_duplicates("grid_id").set_index("grid_id").land_area_km2
         compare = pd.concat([cells.rename("cell"), areas.rename("crosswalk")], axis=1).dropna()
-        relative = (compare.cell-compare.crosswalk).abs()/compare.cell.replace(0, np.nan)
+        relative = (compare.cell - compare.crosswalk).abs() / compare.cell.replace(0, np.nan)
         if (relative > 0.01).any():
             raise ValueError("Crosswalk intersection area differs from cell land area by more than 1%.")
-    indicators = build_indicators(monthly)
-    indicators = add_lags(indicators, ["soil_moisture_z", "D", "burned_fraction", "F",
-                                       "ndvi_z", "V", "t2m_c", "precip_mm"])
+    # Default development/validation mode never derives 2021-2024 event labels.
+    pretest_monthly = monthly[monthly["date"] <= pd.Timestamp(f"{VALID_END}-12-01")].copy()
+    development_indicators = build_indicators(pretest_monthly)
+    development_indicators = add_lags(development_indicators, [
+        "soil_moisture_z", "D", "burned_fraction", "F",
+        "ndvi_z", "V", "t2m_c", "precip_mm",
+    ])
     output = Path(args.output)
-    write_development_outputs(indicators, output, crosswalk)
+    write_development_outputs(development_indicators, output, crosswalk)
+    if args.run_sensitivity:
+        run_threshold_sensitivity(pretest_monthly, output / "sensitivity", crosswalk)
     if args.open_locked_test:
-        open_locked_test(indicators, output, Path(args.prior), Path(args.freeze),
-                         Path(args.test_lock_marker), crosswalk)
+        open_locked_test(
+            monthly, output, Path(args.prior), Path(args.freeze),
+            Path(args.test_lock_marker), crosswalk, source, crosswalk_source, Path(args.manifest)
+        )
     print(f"Development and validation outputs written to: {output.resolve()}")
+    if args.run_sensitivity:
+        print("Threshold sensitivity outputs were written from training/validation data only.")
     if args.open_locked_test:
         print("Locked test released once. Preserve all outputs and manifest hashes.")
     else:

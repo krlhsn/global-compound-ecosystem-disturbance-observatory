@@ -48,6 +48,16 @@ def test_monthly_input_rejects_grid_metadata_changing_within_cell():
         validate_monthly_input(frame)
 
 
+def test_monthly_input_rejects_overlapping_fire_area_accounting():
+    frame = _synthetic_monthly().iloc[:4].copy()
+    # valid mapped land = 90%; special-unburned = 20%; shortened = 10%.
+    # These mutually exclusive buckets cannot sum to more than total land area.
+    frame["fire_unburned_special_fraction"] = 0.20
+    frame["fire_shortened_fraction"] = 0.10
+    with pytest.raises(ValueError, match="fractions cannot exceed 1"):
+        validate_monthly_input(frame)
+
+
 def test_forecast_uses_exact_future_month_and_current_information():
     dates = pd.date_range("2001-05-01", periods=5, freq="MS")
     frame = pd.DataFrame({
@@ -138,5 +148,9 @@ def test_end_to_end_synthetic_software_pipeline_writes_only_development_outputs(
     assert (output / "validation_model_scores.csv").is_file()
     assert (output / "development_event_counts.csv").is_file()
     assert (output / "pilot_report.md").is_file()
+    report = (output / "pilot_report.md").read_text(encoding="utf-8")
+    assert "Pre-test input range" in report
+    assert "2020-12-01" in report
+    assert "2024-12-01" not in report
     assert not (output / "LOCKED_TEST_scores.csv").exists()
     assert not (output / "LOCKED_TEST_OPENED.txt").exists()

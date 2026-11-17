@@ -1,1 +1,1 @@
-grid_id,date,latitude,longitude,land_area_km2,ecoregion_id,ecoregion_name,biome_name,realm,ecoregion_fraction,swvl1,swvl2,swvl3,t2m_c,precip_mm,ndvi,ndvi_good_fraction,burned_area_km2,valid_land_area_km2,fire_shortened_fraction
+grid_id,date,latitude,longitude,land_area_km2,ecoregion_id,ecoregion_name,biome_name,realm,ecoregion_fraction,swvl1,swvl2,swvl3,t2m_c,precip_mm,ndvi,ndvi_good_fraction,burned_area_km2,valid_land_area_km2,fire_shortened_fraction,fire_unburned_special_fraction

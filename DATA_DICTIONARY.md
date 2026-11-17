@@ -29,7 +29,7 @@
 | burned_area_km2 | km² | Burned pixel area under the full-month valid land mask |
 | valid_land_area_km2 | km² | Denominator area: burned valid land plus reliably unburned land (BurnDate = 0 and QA special-condition bits 5–7 = 0) |
 | fire_shortened_fraction | 0–1 | Terrestrial area share flagged as shortened; retained for audit |
-| fire_unburned_special_fraction | 0–1 | Terrestrial area share classified unburned with a non-zero MCD64A1 special-condition code; excluded from the burned-fraction denominator |
+| fire_unburned_special_fraction | 0–1 | Share of cell terrestrial area in full-month valid land pixels classified unburned with a non-zero MCD64A1 special-condition code; excluded from the burned-fraction denominator |
 
 ## Required ecoregion crosswalk
 
