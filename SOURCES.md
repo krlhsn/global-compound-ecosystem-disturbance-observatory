@@ -19,7 +19,7 @@ This is the planned source register. Record actual retrieval dates, immutable as
 - Copernicus Climate Data Store: https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land-monthly-means
 - Variables: volumetric_soil_water_layer_1, _2, _3; temperature_2m; total_precipitation_sum.
 - Units: soil water is volumetric fraction; temperature is K; precipitation is accumulated depth in m in the Earth Engine aggregate. Convert temperature to °C and precipitation to mm.
-- Citation: Muñoz-Sabater, J. et al. (2021). ERA5-Land: a state-of-the-art global reanalysis dataset for land applications. Earth System Science Data, 13, 4349–4383. https://doi.org/10.5194/essd-13-4349-2021
+- Citation: Muñoz-Sabater, J. et al. (2021). ERA5-Land: a state-of-the-art global reanalysis dataset for land applications. Earth System Science Data, 13, 4349-4383. https://doi.org/10.5194/essd-13-4349-2021
 - Attribution: acknowledge Copernicus Climate Change Service / ECMWF under the current dataset terms. Verify current licence and acknowledgement wording at retrieval time.
 
 ## 3. MODIS/Terra MOD13C2.061
