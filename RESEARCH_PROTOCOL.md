@@ -31,7 +31,7 @@ All three definitions are proposed operational proxies and require review after 
 
 ### D - Root-zone soil-moisture drought proxy
 
-1. Use ERA5-Land volumetric soil-water layers 1–3, representing 0–7 cm, 7–28 cm and 28–100 cm.
+1. Use ERA5-Land volumetric soil-water layers 1-3, representing 0-7 cm, 7-28 cm and 28-100 cm.
 2. Compute the depth-weighted 0–100 cm proxy:
 
    rootzone_sm = 0.07*swvl1 + 0.21*swvl2 + 0.72*swvl3
