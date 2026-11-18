@@ -1,6 +1,6 @@
 # Sources, Product Metadata and Attribution
 
-This is the planned source register. Record actual retrieval dates, immutable asset identifiers, export parameters, QA code hashes and output checksums after extraction. The scientific target window remains fixed at May 2001–December 2024 regardless of current product availability.
+This is the planned source register. Record actual retrieval dates, immutable asset identifiers, export parameters, QA code hashes and output checksums after extraction. The scientific target window remains fixed at May 2001-December 2024 regardless of current product availability.
 
 ## 1. RESOLVE Ecoregions 2017
 
