@@ -144,9 +144,9 @@ Regional metrics require fractional-area weights and at least 30 events and 30 n
 ## 10. Sensitivity analyses
 
 Before the test release, use only training/validation outcomes to assess:
-- Drought cutoffs of −0.75 and −1.25 SD.
+- Drought cutoffs of -0.75 and -1.25 SD.
 - Fire thresholds at the 85th and 95th percentiles.
-- Vegetation cutoffs of −0.25 and −0.75 SD.
+- Vegetation cutoffs of -0.25 and -0.75 SD.
 - Ecoregion-only versus biome-fallback fire thresholds.
 - Alternative QA coverage requirements and NDVI QA decoding.
 - Cell-boundary and land-mask handling.
