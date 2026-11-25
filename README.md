@@ -150,7 +150,6 @@ A predicted probability is conditional on the data and model specification. It i
 ## Author
 
 **Kamrul Hassan**  
-[GitHub](https://github.com/krlhsn) · [LinkedIn](https://www.linkedin.com/in/krlhsn/) · [ORCID](https://orcid.org/0009-0008-2990-1036)
 
 ## License and citation
 
